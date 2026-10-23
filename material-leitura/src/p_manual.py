@@ -416,7 +416,7 @@ def primeira_semana(c, pag, total):
     """Plano de impressão e uso da primeira semana."""
     fundo(c)
     topo = faixa_titulo(c, "COMECE AQUI — PRIMEIRA SEMANA",
-                        "Imprima só estas páginas. O mês inteiro está no caderno 06.",
+                        "Imprima só estas páginas. O plano das 13 semanas está no caderno 06.",
                         TEAL, TEAL_L, etiqueta="guia")
     larg = W - 2 * M
     y = topo - 5 * mm
@@ -428,7 +428,7 @@ def primeira_semana(c, pag, total):
     itens = [
         ("01", "Capa + instruções", "p. 1 e 2 do caderno de letras"),
         ("01", "Folha da letra A", "p. 3 (uma só!)"),
-        ("06", "Cronograma do mês", "p. 2 a 4 — o mapa das 4 semanas"),
+        ("06", "Cronograma do alfabeto", "p. 2 (lista) e 3 (semana 1)"),
         ("05", "Guia do adulto", "p. 1 a 5, para você ler"),
         ("05", "Quadro de conquistas", "p. 5 — cole na parede"),
     ]

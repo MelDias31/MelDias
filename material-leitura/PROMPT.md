@@ -32,7 +32,7 @@ Nada de imagens coloridas que concorram com a tarefa: cor só para hierarquizar.
 | `03-leitura-e-escrita.pdf` | 5 níveis de frases, histórias curtas, ditado de figuras, folhas de escrita, autoavaliação | ~15 |
 | `04-jogos-e-fichas.pdf` | Como usar os jogos, memória (24 cartas), bingo (6 cartelas + fichas), trilha de 26 casas com dado e peões, ligue-ligue, 3 caça-palavras, dominó, forca | ~17 |
 | `05-guia-do-adulto.pdf` | Guia TDAH, rotina de 10 min, quadro de recompensas, registro de progresso, cartões de pausa, certificados | ~8 |
-| `06-cronograma-4-semanas.pdf` | Plano dia a dia do primeiro mês: lista de impressão em ordem, uma página por semana e o que fazer depois da 4ª semana | ~7 |
+| `06-cronograma-do-alfabeto.pdf` | Plano dia a dia das 13 semanas (2 letras por semana): lista de impressão, uma página por semana e as fases seguintes | ~16 |
 
 ### Regras de design obrigatórias (TDAH-friendly)
 1. **Uma tarefa por página.** Nunca duas atividades competindo na mesma folha.

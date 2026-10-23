@@ -106,11 +106,11 @@ def guia_familia():
 
 
 def cronograma():
-    d = Doc("06-cronograma-4-semanas.pdf", "Cronograma de 4 Semanas",
-            "Plano dia a dia do primeiro mês — o que fazer e o que imprimir")
+    d = Doc("06-cronograma-do-alfabeto.pdf", "Cronograma do Alfabeto",
+            "Plano dia a dia das 13 semanas — o que fazer e o que imprimir")
     d.add(pc.capa)
     d.add(pc.lista_impressao)
-    for n in range(4):
+    for n in range(13):
         d.add(pc.semana, n)
     d.add(pc.depois)
     return d.render()
