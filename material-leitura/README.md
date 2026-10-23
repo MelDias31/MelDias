@@ -4,7 +4,7 @@ Material completo de alfabetização em **PDF A4** para uma criança de 6 anos c
 dificuldade de memorizar as letras. Feito para ser usado **10 minutos por dia**, em casa,
 por quem não é professor.
 
-**5 cadernos · 126 páginas · 110 MB · tudo em A4 (210 × 297 mm)**
+**5 cadernos · 126 páginas · ~14 MB · tudo em A4 (210 × 297 mm)**
 
 ---
 

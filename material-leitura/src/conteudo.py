@@ -80,7 +80,7 @@ FAMILIAS = [
     ("M", "MA ME MI MO MU", [("MAÇÃ", "🍎", "MA"), ("MALA", "🧳", "MA"),
                              ("MEL", "🍯", "ME"), ("MOLA", "🧷", "MO")]),
     ("N", "NA NE NI NO NU", [("NAVIO", "🚢", "NA"), ("NUVEM", "☁️", "NU"),
-                             ("NINHO", "🪹", "NI"), ("NOVE", "9️⃣", "NO")]),
+                             ("NINHO", "🪹", "NI"), ("NOVE", "9", "NO")]),
     ("P", "PA PE PI PO PU", [("PATO", "🦆", "PA"), ("PÃO", "🍞", "PÃO"),
                              ("PIPA", "🪁", "PI"), ("POTE", "🍯", "PO")]),
     ("R", "RA RE RI RO RU", [("RATO", "🐭", "RA"), ("RODA", "🛞", "RO"),
@@ -93,7 +93,7 @@ FAMILIAS = [
                              ("VILA", "🏘️", "VI"), ("VOVÓ", "👵", "VO")]),
     ("J", "JA JE JI JO JU", [("JACARÉ", "🐊", "JA"), ("JANELA", "🪟", "JA"),
                              ("JIPE", "🚙", "JI"), ("JOGO", "🎮", "JO")]),
-    ("Z", "ZA ZE ZI ZO ZU", [("ZEBRA", "🦓", "ZE"), ("ZERO", "0️⃣", "ZE"),
+    ("Z", "ZA ZE ZI ZO ZU", [("ZEBRA", "🦓", "ZE"), ("ZERO", "0", "ZE"),
                              ("ZINCO", "🔩", "ZI"), ("ZOOLÓGICO", "🦁", "ZO")]),
 ]
 
@@ -208,7 +208,7 @@ COMPLEXAS = [
     ("GE / GI", "GE  GI", [("GELO", "🧊"), ("GIRAFA", "🦒"),
                            ("GEMA", "🥚"), ("GILETE", "🪒")]),
     ("QU / GU", "QUA QUE QUI QUO  /  GUA GUE GUI GUO",
-     [("QUEIJO", "🧀"), ("QUATRO", "4️⃣"), ("GUITARRA", "🎸"), ("ÁGUIA", "🦅")]),
+     [("QUEIJO", "🧀"), ("QUATRO", "4"), ("GUITARRA", "🎸"), ("ÁGUIA", "🦅")]),
 ]
 
 # Palavras por número de sílabas (para ditado/leitura)

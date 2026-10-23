@@ -416,14 +416,28 @@ def capa_jogos(c, pag, total):
         ("🁢", "Dominó de sílabas", "2 folhas de peças"),
         ("🅰️", "Forca de palavras", "para adivinhar letras"),
     ]
-    yy = y
-    for fig, tit, sub in itens:
+    dicas = [
+        "Jogue junto e deixe ela ganhar algumas vezes: o jogo é para ler, não para vencer.",
+        "Rodadas curtas. Se cansar, pare antes do erro — guarde com vontade de voltar.",
+    ]
+    box_h = 12 * mm + len(dicas) * 6.4 * mm + 5 * mm
+    box_y = M + 13 * mm
+    box_topo = box_y + box_h
+
+    passo = (y - (box_topo + 19 * mm)) / 6
+    for i, (fig, tit, sub) in enumerate(itens):
+        yy = y - i * passo
         rrect(c, M + 8 * mm, yy - 13 * mm, W - 2 * M - 16 * mm, 15 * mm, 7,
               WHITE, HexColor("#E8E1D3"), 1)
         emoji(c, fig, M + 18 * mm, yy - 5.5 * mm, 9 * mm, AMBER)
         texto(c, M + 27 * mm, yy - 5 * mm, tit, 10, FONT_B, INK)
         texto(c, W - M - 14 * mm, yy - 5 * mm, sub, 8, FONT, SOFT, "r")
-        yy -= 17.5 * mm
+
+    rrect(c, M + 8 * mm, box_y, W - 2 * M - 16 * mm, box_h, 9, AMBER_L, None)
+    texto(c, M + 16 * mm, box_topo - 8.5 * mm, "ANTES DE JOGAR", 8.5, FONT_B, AMBER)
+    for i, t in enumerate(dicas):
+        texto(c, M + 16 * mm, box_topo - 16.5 * mm - i * 6.6 * mm, "•  " + t, 8.6,
+              FONT, INK)
     rodape(c, pag, total)
 
 
@@ -559,7 +573,7 @@ def forca(c, pag, total):
                         BLUE, BLUE_L, etiqueta="jogo")
     larg = W - 2 * M
     y = topo - 8 * mm
-    alt_rod = (y - (M + 34 * mm)) / 3
+    alt_rod = (y - (M + 46 * mm)) / 3
     for rodada in range(3):
         yy = y - rodada * alt_rod
         h = alt_rod - 5 * mm
@@ -575,23 +589,30 @@ def forca(c, pag, total):
         linha(c, bx + 18 * mm, topo_forca, bx + 18 * mm, topo_forca - 4 * mm, INK, 1.2)  # corda
         # espaços das letras
         n = 7
-        xw = M + 48 * mm
-        tam_casa = min(11 * mm, (larg - 60 * mm) / n)
+        xw = M + 46 * mm
+        tam_casa = (W - M - 6 * mm - xw) / n
         for k in range(n):
             x = xw + k * tam_casa
-            linha(c, x, yy - h / 2 - 2 * mm, x + tam_casa * 0.82,
-                  yy - h / 2 - 2 * mm, HexColor("#B9C0C9"), 1.4)
-        # alfabeto para riscar
-        texto(c, M + 48 * mm, yy - h + 8 * mm, "A B C D E F G H I J K L M", 7.4, FONT, SOFT)
-        texto(c, M + 98 * mm, yy - h + 8 * mm, "N O P Q R S T U V W X Y Z", 7.4, FONT, SOFT)
+            linha(c, x, yy - h * 0.52, x + tam_casa * 0.70,
+                  yy - h * 0.52, HexColor("#B9C0C9"), 1.6)
+        # alfabeto para riscar (quadradinhos: a criança marca o que já chutou)
+        aw = (W - M - 6 * mm - xw) / 13
+        ah = 8.5 * mm
+        for linha_i, letras in enumerate(["ABCDEFGHIJKLM", "NOPQRSTUVWXYZ"]):
+            yb = yy - h + 6 * mm + (1 - linha_i) * (ah + 2 * mm)
+            for k, L in enumerate(letras):
+                xb = xw + k * aw
+                rrect(c, xb + 0.4 * mm, yb, aw - 0.8 * mm, ah, 2,
+                      None, HexColor("#D3D9E1"), 0.7)
+                texto(c, xb + aw / 2, yb + ah / 2 - 3.4, L, 9.2, FONT_B, INK, "c")
 
     # figuras para sortear
-    y2 = M + 26 * mm
-    rrect(c, M, M + 4 * mm, larg, y2 - M - 4 * mm, 10, AMBER_L, None)
+    y2 = M + 38 * mm
+    rrect(c, M, M + 6 * mm, larg, y2 - M - 6 * mm, 10, AMBER_L, None)
     texto(c, M + 5 * mm, y2 - 7 * mm, "FIGURAS PARA SORTEAR (recorte ou aponte)", 8.5,
           FONT_B, AMBER)
     for i, (pal, fig) in enumerate(MEMORIA[:10]):
         cx = M + 13 * mm + i * ((larg - 20 * mm) / 10)
-        emoji(c, fig, cx, y2 - 17 * mm, 10 * mm, AMBER)
-        texto(c, cx, y2 - 24 * mm, pal, 6.2, FONT, SOFT, "c")
+        emoji(c, fig, cx, y2 - 17.5 * mm, 10.5 * mm, AMBER)
+        texto(c, cx, y2 - 24.5 * mm, pal, 6.8, FONT, SOFT, "c")
     rodape(c, pag, total, "Forca das palavras • jogo")

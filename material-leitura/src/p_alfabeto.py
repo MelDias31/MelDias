@@ -280,15 +280,18 @@ def folha_letra_minuscula(c, pag, total, letra):
         desenhar_texto(c, letra.lower(), M + 16 * mm, base_l, alt_l * 0.80,
                        "guia" if k % 2 == 0 else "pontilhado", SOFT)
         # repetições pontilhadas para cobrir, distribuídas na linha
-        if k < 5:
-            xx = M + 40 * mm
-            while xx < W - M - 16 * mm:
-                desenhar_letra(c, letra, xx, base_l, alt_l, "pontilhado", SOFT,
-                               largura_linha=1.2, mostrar_numeros=False,
-                               mostrar_seta=False, mostrar_inicio=False)
-                desenhar_texto(c, letra.lower(), xx + 11.5 * mm, base_l, alt_l * 0.72,
-                               "pontilhado", SOFT)
-                xx += 31 * mm
+        # (nas últimas linhas elas somem aos poucos: a criança passa a escrever sozinha)
+        n_rep = 99 if k < 5 else (2 if k < 7 else 0)
+        xx = M + 40 * mm
+        j = 0
+        while xx < W - M - 16 * mm and j < n_rep:
+            desenhar_letra(c, letra, xx, base_l, alt_l, "pontilhado", SOFT,
+                           largura_linha=1.2, mostrar_numeros=False,
+                           mostrar_seta=False, mostrar_inicio=False)
+            desenhar_texto(c, letra.lower(), xx + 11.5 * mm, base_l, alt_l * 0.72,
+                           "pontilhado", SOFT)
+            xx += 31 * mm
+            j += 1
     rodape(c, pag, total)
 
 
@@ -466,7 +469,7 @@ def alfabeto_mural_2(c, pag, total):
 
 
 def bingo_letras(c, pag, total):
-    """Cartelas de bingo de letras (4 por folha)."""
+    """Cartelas de bingo de letras (6 por folha)."""
     import random as _r
     fundo(c)
     texto(c, W / 2, H - M - 6 * mm, "BINGO DE LETRAS", 16, FONT_B, TEAL, "c")
@@ -477,8 +480,8 @@ def bingo_letras(c, pag, total):
     larg = W - 2 * M
     alt = H - 2 * M - 42 * mm
     cw = (larg - 6 * mm) / 2
-    ch = (alt - 6 * mm) / 2
-    for k in range(4):
+    ch = (alt - 2 * 6 * mm) / 3
+    for k in range(6):
         col, row = k % 2, k // 2
         x = M + col * (cw + 6 * mm)
         y = H - M - 20 * mm - (row + 1) * ch - row * 6 * mm

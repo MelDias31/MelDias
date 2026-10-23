@@ -39,12 +39,17 @@ def familia(c, pag, total, item):
            "V", "J", "Z"].index(letra) % 7
     cor, cor_l = PALETA[idx], PALETA_L[idx]
     fundo(c)
-    topo = faixa_titulo(c, f"FAMÍLIA DO {letra}", f"Junte a letra {letra} com as vogais",
-                        cor, cor_l, etiqueta="sílabas")
+    lista = silabas.split()
+    if len(lista) < 5:
+        sub = (f"{', '.join(lista[:-1])} e {lista[-1]} — "
+               "com as outras vogais o som muda")
+    else:
+        sub = f"Junte a letra {letra} com as vogais"
+    topo = faixa_titulo(c, f"FAMÍLIA DO {letra}", sub, cor, cor_l,
+                        etiqueta="sílabas")
     larg_total = W - 2 * M
 
     # ---- sílabas grandes
-    lista = silabas.split()
     n = len(lista)
     y_sil = topo - 6 * mm
     alt_s = 34 * mm
@@ -115,26 +120,35 @@ def complexas(c, pag, total, item):
                         cor, cor_l, etiqueta="sílabas especiais")
     larg_total = W - 2 * M
 
-    # faixa de sílabas
-    lista = silabas.split()
-    while len(lista) > 5:
-        lista = lista[:-1]
-    n = max(1, len(lista))
+    # faixa de sílabas (um grupo por linha; QU/GU vira duas linhas)
+    grupos = [g.split() for g in silabas.split("/") if g.split()]
+    if not grupos:
+        grupos = [[]]
+    grupos = [g[:5] for g in grupos[:2]]
+    lista = grupos[0]
+    duas = len(grupos) > 1
+    alt_s = 19 * mm if duas else 26 * mm
+    gap_s = 4 * mm
     y_sil = topo - 6 * mm
-    alt_s = 26 * mm
-    cw = larg_total / n
-    for i, s in enumerate(lista):
-        cx = M + i * cw
-        rrect(c, cx + 1 * mm, y_sil - alt_s, cw - 2 * mm, alt_s, 8, WHITE, cor, 1.3)
-        tam = 26 if len(s) <= 3 else 20
-        desenhar_texto(c, s, cx + cw / 2 - medir(s, tam, "Andika-Bold.ttf") / 2,
-                       y_sil - 12.5 * mm, tam, "solido", cor,
-                       nome_fonte="Andika-Bold.ttf")
-        desenhar_texto(c, s, cx + cw / 2 - medir(s, 20) / 2, y_sil - 20.5 * mm, 20,
-                       "guia", SOFT)
+    for gi, grupo in enumerate(grupos):
+        n = max(1, len(grupo))
+        cw = larg_total / n
+        topo_lin = y_sil - gi * (alt_s + gap_s)
+        for i, s in enumerate(grupo):
+            cx = M + i * cw
+            rrect(c, cx + 1 * mm, topo_lin - alt_s, cw - 2 * mm, alt_s, 8,
+                  WHITE, cor, 1.3)
+            tam = (24 if len(s) <= 3 else 18) if duas else (26 if len(s) <= 3 else 20)
+            desenhar_texto(c, s, cx + cw / 2 - medir(s, tam, "Andika-Bold.ttf") / 2,
+                           topo_lin - (8.5 * mm if duas else 12.5 * mm), tam,
+                           "solido", cor, nome_fonte="Andika-Bold.ttf")
+            tam_g = 15 if duas else 20
+            desenhar_texto(c, s, cx + cw / 2 - medir(s, tam_g) / 2,
+                           topo_lin - (16 * mm if duas else 20.5 * mm), tam_g,
+                           "guia", SOFT)
 
     # cartões de palavras
-    y = y_sil - alt_s - 6 * mm
+    y = (y_sil - len(grupos) * alt_s - (len(grupos) - 1) * gap_s - 6 * mm)
     bh = 33 * mm
     for i, (pal, fig) in enumerate(palavras):
         col, row = i % 2, i // 2
@@ -160,10 +174,12 @@ def complexas(c, pag, total, item):
         yy = y_tr - 12 * mm - k * passo
         pauta(c, M + 6 * mm, yy - 11 * mm, larg_total - 12 * mm, 11 * mm,
               HexColor("#DCE2E9"))
+        grupo = grupos[k % len(grupos)]
+        n = max(1, len(grupo))
         xx = M + 8 * mm
         j = 0
         while xx < W - M - 22 * mm:
-            s = lista[j % n]
+            s = grupo[j % n]
             desenhar_texto(c, s, xx, yy - 11 * mm, 11 * mm,
                            "guia" if k < n_lin - 2 else "pontilhado", SOFT)
             xx += medir(s, 11 * mm) + 8 * mm
@@ -229,16 +245,34 @@ def capa(c, pag, total):
               "Leia a sílaba, aponte a figura, leia a palavra e só depois treine a escrita. "
               "As sílabas especiais (CH, LH, NH, RR, SS, ÃO) vêm por último — são as mais difíceis.",
               10, FONT, SOFT, align="c")
+    dicas = [
+        "Escolha o momento: criança descansada, barriga cheia, sem tela por perto.",
+        "De 5 a 10 minutos bastam. Pare no meio, com vontade de voltar amanhã.",
+        "Uma família por dia — ou uma por semana, se estiver difícil.",
+        "Repita a mesma folha em dias diferentes antes de ir para a próxima.",
+    ]
+    box_h = 12 * mm + len(dicas) * 6.4 * mm + 6 * mm
+    box_y = M + 13 * mm
+    box_topo = box_y + box_h
+
     y2 = y - 32 * mm
+    passo = (y2 - (box_topo + 8 * mm)) / 3
     for i, (fig, txt) in enumerate([
             ("👂", "Primeiro ouça: diga a sílaba e peça para ela repetir."),
             ("👀", "Depois veja: mostre a sílaba escrita na folha."),
             ("✍️", "Por último escreva: cubra o tracejado com o dedo, depois com o lápis.")]):
-        yy = y2 - i * 16 * mm
-        rrect(c, M + 10 * mm, yy - 12 * mm, W - 2 * M - 20 * mm, 14 * mm, 7,
+        yy = y2 - i * passo
+        rrect(c, M + 10 * mm, yy - 15 * mm, W - 2 * M - 20 * mm, 17 * mm, 7,
               WHITE, HexColor("#E3E7EC"), 1)
-        emoji(c, fig, M + 20 * mm, yy - 5 * mm, 10 * mm, BLUE)
-        texto(c, M + 30 * mm, yy - 6 * mm, txt, 9.5, FONT, INK)
+        emoji(c, fig, M + 20 * mm, yy - 6.5 * mm, 10 * mm, BLUE)
+        texto(c, M + 30 * mm, yy - 7.5 * mm, txt, 9.5, FONT, INK)
+
+    rrect(c, M + 10 * mm, box_y, W - 2 * M - 20 * mm, box_h, 9, AMBER_L, None)
+    texto(c, M + 18 * mm, box_topo - 8.5 * mm, "PARA DAR CERTO NO DIA A DIA",
+          8.5, FONT_B, AMBER)
+    for i, t in enumerate(dicas):
+        texto(c, M + 18 * mm, box_topo - 16 * mm - i * 6.4 * mm, "•  " + t, 8.6,
+              FONT, INK)
     rodape(c, pag, total)
 
 
@@ -322,4 +356,14 @@ def treino_leitura(c, pag, total):
               "A meta não é ser rápido: é ler sem parar para adivinhar. Se errar, "
               "volte uma linha e leia de novo. Repetir 3 vezes na mesma sessão já "
               "melhora o reconhecimento automático.", 8.4, FONT, SOFT)
+
+    # anotações do adulto
+    linha(c, M + 6 * mm, y2 - 44 * mm, W - M - 6 * mm, y2 - 44 * mm,
+          HexColor("#DCE3EA"), 0.8)
+    texto(c, M + 6 * mm, y2 - 52 * mm, "O QUE FOI DIFÍCIL HOJE", 8.5, FONT_B, TEAL)
+    texto(c, M + 6 * mm, y2 - 58 * mm,
+          "Anote a sílaba ou a palavra que travou: ela volta amanhã.", 8, FONT, SOFT)
+    for k in range(6):
+        yy = y2 - 70 * mm - k * 12 * mm
+        linha(c, M + 6 * mm, yy, W - M - 6 * mm, yy, HexColor("#D3DAE2"), 1)
     rodape(c, pag, total)

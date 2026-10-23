@@ -260,7 +260,7 @@ def capa(c, pag, total):
     for i, e in enumerate(["🦆", "🐟", "🌙"]):
         emoji(c, e, W / 2 + (i - 1) * 28 * mm, H - 62 * mm, 20 * mm, WHITE)
 
-    y = H - 102 * mm
+    y = H - 100 * mm
     texto(c, W / 2, y, "CINCO NÍVEIS DE LEITURA", 13, FONT_B, INK, "c")
     texto(c, W / 2, y - 7 * mm,
           "Comece no nível 1. Só avance quando o nível atual estiver fácil.", 9.5,
@@ -272,26 +272,26 @@ def capa(c, pag, total):
         ("4", "Frase com ação", "O MENINO PULA.", PURPLE),
         ("5", "Duas frases", "O GATO SOBE. ELE QUER O PEIXE.", AMBER),
     ]
-    yy = y - 16 * mm
+    yy = y - 18 * mm
     for num, tit, ex, cor in niveis:
-        rrect(c, M + 12 * mm, yy - 15 * mm, W - 2 * M - 24 * mm, 15 * mm, 8,
+        rrect(c, M + 12 * mm, yy - 16 * mm, W - 2 * M - 24 * mm, 16 * mm, 8,
               WHITE, HexColor("#E3DDEB"), 1)
-        numero_passo(c, M + 22 * mm, yy - 7.5 * mm, num, 5.0, WHITE, cor, 8)
-        texto(c, M + 31 * mm, yy - 6.4 * mm, tit, 10, FONT_B, INK)
-        texto(c, W - M - 18 * mm, yy - 6.4 * mm, ex, 8.5, FONT, SOFT, "r")
-        yy -= 17.5 * mm
+        numero_passo(c, M + 22 * mm, yy - 8 * mm, num, 5.0, WHITE, cor, 8)
+        texto(c, M + 31 * mm, yy - 6.6 * mm, tit, 10.5, FONT_B, INK)
+        texto(c, W - M - 18 * mm, yy - 6.6 * mm, ex, 8.5, FONT, SOFT, "r")
+        yy -= 21 * mm
 
     # como usar
-    yb = yy + 4 * mm
-    rrect(c, M + 12 * mm, M + 8 * mm, W - 2 * M - 24 * mm, yb - M - 8 * mm, 9,
+    yb = yy + 21 * mm - 16 * mm - 7 * mm
+    rrect(c, M + 12 * mm, M + 12 * mm, W - 2 * M - 24 * mm, yb - M - 12 * mm, 9,
           AMBER_L, None)
-    texto(c, M + 20 * mm, yb - 8 * mm, "ANTES DE COMEÇAR", 8.5, FONT_B, AMBER)
+    texto(c, M + 20 * mm, yb - 9 * mm, "ANTES DE COMEÇAR", 8.5, FONT_B, AMBER)
     for i, t in enumerate([
             "Leia junto, apontando cada sílaba com o dedo.",
             "Deixe ela adivinhar pelo desenho: faz parte do caminho.",
             "Elogie o esforço, não o acerto.",
             "Termine sempre antes do cansaço."]):
-        texto(c, M + 20 * mm, yb - 15 * mm - i * 5 * mm, "•  " + t, 8.6, FONT, INK)
+        texto(c, M + 20 * mm, yb - 18.5 * mm - i * 6.4 * mm, "•  " + t, 8.8, FONT, INK)
     rodape(c, pag, total)
 
 
@@ -431,20 +431,29 @@ def autoavaliacao(c, pag, total):
     y = topo - 12 * mm
     linhas = ["Foi fácil?", "Foi divertido?", "Quero repetir?", "Precisei de ajuda?"]
     emojis = ["😀", "🙂", "😐", "😟"]
+
+    nota = ("Perguntar como ela se sentiu é parte do método. Criança com TDAH costuma "
+            "associar tarefa a fracasso; se ela marcar carinha triste, mude o formato "
+            "amanhã (mais jogo, menos folha) e reduza o tempo. O objetivo é manter o "
+            "vínculo — sem vínculo não há aprendizagem.")
+    linhas_nota = quebrar(nota, larg - 12 * mm, 8.8, FONT)
+    caixa_h = 10 * mm + len(linhas_nota) * 4.8 * mm + 5 * mm
+    caixa_y = M + 8 * mm
+    caixa_topo = caixa_y + caixa_h
+
+    passo = (y - (caixa_topo + 8 * mm)) / 4
+    h = passo - 6 * mm
     for i, pergunta in enumerate(linhas):
-        yy = y - i * 26 * mm
-        rrect(c, M, yy - 22 * mm, larg, 22 * mm, 9, WHITE, LINE, 1)
-        texto(c, M + 6 * mm, yy - 13 * mm, pergunta, 11, FONT_B, INK)
+        yy = y - i * passo
+        rrect(c, M, yy - h, larg, h, 9, WHITE, LINE, 1)
+        texto(c, M + 6 * mm, yy - h / 2 - 4, pergunta, 11.5, FONT_B, INK)
         for j, e in enumerate(emojis):
             cx = W - M - 14 * mm - (3 - j) * 17 * mm
-            emoji(c, e, cx, yy - 11 * mm, 10 * mm, SOFT)
-            checkbox(c, cx - 2.5 * mm, yy - 19 * mm, 5 * mm, HexColor("#B9C0C9"), 1)
-    y2 = y - 4 * 26 * mm - 4 * mm
-    rrect(c, M, M + 4 * mm, larg, y2 - M - 4 * mm, 10, PINK_L, None)
-    texto(c, M + 5 * mm, y2 - 8 * mm, "PARA O ADULTO", 9, FONT_B, PINK)
-    paragrafo(c, M + 5 * mm, y2 - 15 * mm, larg - 10 * mm,
-              "Perguntar como ela se sentiu é parte do método. Criança com TDAH costuma "
-              "associar tarefa a fracasso; se ela marcar carinha triste, mude o formato "
-              "amanhã (mais jogo, menos folha) e reduza o tempo. O objetivo é manter o "
-              "vínculo — sem vínculo não há aprendizagem.", 8.8, FONT, INK)
+            emoji(c, e, cx, yy - h / 2 + 1 * mm, 10 * mm, SOFT)
+            checkbox(c, cx - 2.5 * mm, yy - h + 5 * mm, 5 * mm, HexColor("#B9C0C9"), 1)
+
+    rrect(c, M, caixa_y, larg, caixa_h, 10, PINK_L, None)
+    texto(c, M + 6 * mm, caixa_topo - 8 * mm, "PARA O ADULTO", 9, FONT_B, PINK)
+    for k, ln in enumerate(linhas_nota):
+        texto(c, M + 6 * mm, caixa_topo - 15 * mm - k * 4.8 * mm, ln, 8.8, FONT, INK)
     rodape(c, pag, total)
