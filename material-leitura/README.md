@@ -6,12 +6,16 @@ por quem não é professor.
 
 **6 cadernos · 143 páginas · ~13 MB · tudo em A4 (210 × 297 mm)**
 
+Há também **`00-kit-ler-sem-pressa-completo.pdf`**: os 6 cadernos num único PDF de
+**144 páginas** (com sumário e marcadores), para quem prefere um arquivo só.
+
 ---
 
 ## O que tem dentro
 
 | Arquivo | Páginas | Para quem | Conteúdo |
 |---|---|---|---|
+| **00-kit-ler-sem-pressa-completo.pdf** | 144 | todos | **os 6 cadernos juntos**, com sumário, marcadores e a página de cada caderno |
 | **01-caderno-do-alfabeto.pdf** | 59 | criança | Capa, instruções, **26 folhas de letras** (colorir + traçar + caça-letra), **26 folhas de minúsculas**, letras que se parecem, mural do alfabeto, bingo de letras, mapa das 26 letras |
 | **02-silabas-e-palavras.pdf** | 28 | criança | **15 famílias silábicas** (BA BE BI BO BU…), **9 grupos complexos** (CH, LH, NH, RR, SS, ÃO, CE/CI, GE/GI, QU/GU), escada de palavras, leitura rápida |
 | **03-leitura-e-escrita.pdf** | 15 | criança | **5 níveis de frases**, 6 histórias curtas, ditado de figuras, folhas de escrita, autoavaliação |
@@ -90,6 +94,9 @@ python3 -m venv .venv
 .venv/bin/pip install reportlab fonttools pillow pymupdf
 .venv/bin/python material-leitura/src/gerar.py
 ```
+
+O `gerar.py` produz os 6 cadernos e, no fim, chama `src/juntar.py`, que monta o
+arquivo único de 144 páginas com o sumário e os marcadores.
 
 O gerador é determinístico: rodar de novo produz exatamente os mesmos arquivos.
 As fontes usadas (Andika, SIL OFL; Noto Emoji, Apache 2.0) já estão em `fontes/`.

@@ -124,6 +124,13 @@ def main():
         caminho, total = fn()
         print(f"{os.path.basename(caminho):32s} {total:3d} páginas")
 
+    # arquivo único com os 6 cadernos (só se o juntador existir)
+    try:
+        import juntar
+        juntar.main()
+    except ImportError:
+        pass
+
 
 if __name__ == "__main__":
     main()

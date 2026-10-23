@@ -27,6 +27,7 @@ Nada de imagens coloridas que concorram com a tarefa: cor só para hierarquizar.
 
 | Arquivo | Conteúdo | Páginas |
 |---|---|---|
+| `00-kit-ler-sem-pressa-completo.pdf` | Os 6 cadernos num único PDF, com sumário e marcadores | 144 |
 | `01-caderno-do-alfabeto.pdf` | Capa, instruções, 26 folhas (maiúsculas), 26 folhas (minúsculas), letras parecidas, mural, bingo, mapa de progresso | ~59 |
 | `02-silabas-e-palavras.pdf` | 15 famílias silábicas, 9 grupos de sílabas complexas, escada de palavras, leitura rápida | ~28 |
 | `03-leitura-e-escrita.pdf` | 5 níveis de frases, histórias curtas, ditado de figuras, folhas de escrita, autoavaliação | ~15 |
@@ -108,7 +109,7 @@ Gere os 5 PDFs separadamente, nomeados como na tabela, e liste no final:
 material-leitura/
 ├── PROMPT.md                  ← este arquivo (prompt + explicação)
 ├── README.md                  ← como imprimir e usar
-├── pdf/                       ← os 6 PDFs prontos, A4
+├── pdf/                       ← os 6 cadernos + o arquivo único, em A4
 ├── fontes/                    ← Andika (SIL OFL) e Noto Emoji (Apache 2.0)
 └── src/                       ← código Python que gera os PDFs
     ├── gerar.py               ← roda tudo: python src/gerar.py
@@ -122,7 +123,8 @@ material-leitura/
     ├── p_leitura.py           ← páginas de leitura e escrita
     ├── p_jogos.py             ← jogos e fichas
     ├── p_manual.py            ← guia do adulto
-    └── p_cronograma.py        ← cronograma de 4 semanas
+    ├── p_cronograma.py        ← cronograma das 13 semanas
+    └── juntar.py              ← monta o PDF único com sumário e marcadores
 ```
 
 Para regerar os PDFs:
