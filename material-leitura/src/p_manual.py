@@ -78,10 +78,12 @@ def guia_tdah(c, pag, total):
     ]
 
     # altura das colunas calculada pelo conteúdo
+    tam_txt, passo_txt = 9.0, 4.2
+
     def altura_bloco(itens, w):
         h = 16 * mm
         for fig, tit, txt in itens:
-            h += (len(quebrar(txt, w - 20 * mm, 8.4, FONT)) * 4.0 + 5.0) * mm
+            h += (len(quebrar(txt, w - 20 * mm, tam_txt, FONT)) * passo_txt + 5.0) * mm
         return h + 2 * mm
 
     h_col = max(altura_bloco(ajuda, col_w), altura_bloco(atrapalha, col_w))
@@ -95,11 +97,11 @@ def guia_tdah(c, pag, total):
         yy = y - 17 * mm
         for fig, tit, txt in itens:
             emoji(c, fig, x + 8 * mm, yy + 1 * mm, 8.5 * mm, cor)
-            texto(c, x + 15 * mm, yy, tit, 9.2, FONT_B, INK)
-            linhas = quebrar(txt, col_w - 20 * mm, 8.4, FONT)
+            texto(c, x + 15 * mm, yy, tit, 9.5, FONT_B, INK)
+            linhas = quebrar(txt, col_w - 20 * mm, tam_txt, FONT)
             for j, ln in enumerate(linhas):
-                texto(c, x + 15 * mm, yy - (j + 1) * 4.0 * mm, ln, 8.4, FONT, SOFT)
-            yy -= (len(linhas) * 4.0 + 5.0) * mm
+                texto(c, x + 15 * mm, yy - (j + 1) * passo_txt * mm, ln, tam_txt, FONT, SOFT)
+            yy -= (len(linhas) * passo_txt + 5.0) * mm
 
     # faixa final: quando procurar avaliação + adaptações na escola
     y2 = y - h_col - 5 * mm
@@ -126,17 +128,18 @@ def guia_tdah(c, pag, total):
         texto(c, x + 5 * mm, y2 - 8 * mm, cab, 9.5, FONT_B, cor)
         yy = y2 - 16 * mm
         for tit, txt in itens:
-            texto(c, x + 5 * mm, yy, "•  " + tit, 8.4, FONT_B, INK)
-            linhas = quebrar(txt, metade - 10 * mm, 8.0, FONT)
+            texto(c, x + 5 * mm, yy, "•  " + tit, 9, FONT_B, INK)
+            linhas = quebrar(txt, metade - 10 * mm, 8.6, FONT)
             for j, ln in enumerate(linhas):
-                texto(c, x + 5 * mm, yy - (j + 1) * 3.8 * mm, ln, 8.0, FONT, SOFT)
-            yy -= len(linhas) * 3.8 * mm + 3.0 * mm
+                texto(c, x + 5 * mm, yy - (j + 1) * 4.0 * mm, ln, 8.6, FONT, SOFT)
+            # título (1 linha) + linhas do texto + respiro
+            yy -= (len(linhas) + 1) * 4.0 * mm + 2.6 * mm
         texto(c, x + 5 * mm, y2 - h2 + 4 * mm,
               "Leve este material na reunião. Ele é seu apoio." if i == 1
               else "Este material é apoio, não diagnóstico.",
               7.6, FONT_I, SOFT)
 
-    rodape(c, pag, total, "Guia do adulto • 1 de 4")
+    rodape(c, pag, total, "Guia do adulto • parte 1 de 4")
 
 
 def rotina(c, pag, total):
@@ -197,7 +200,7 @@ def rotina(c, pag, total):
               "Se em 10 minutos a criança não engajou, encerre com carinho e tente de novo "
               "amanhã. Insistir depois do limite ensina que ler é sofrimento — e isso é "
               "muito mais difícil de desfazer do que uma sílaba esquecida.", 9, FONT, INK)
-    rodape(c, pag, total, "Guia do adulto • 2 de 4")
+    rodape(c, pag, total, "Guia do adulto • parte 2 de 4")
 
 
 def quadro_recompensas(c, pag, total):
@@ -258,7 +261,7 @@ def quadro_recompensas(c, pag, total):
         c.setFillColor(PINK)
         c.circle(x + 1.5 * mm, yyy + 2.2 * mm, 1.2 * mm, stroke=0, fill=1)
         texto(c, x + 5 * mm, yyy, op, 8.2, FONT, INK)
-    rodape(c, pag, total, "Guia do adulto • 3 de 4")
+    rodape(c, pag, total, "Guia do adulto • parte 3 de 4")
 
 
 def registro(c, pag, total):
@@ -328,7 +331,7 @@ def registro(c, pag, total):
     for k in range(3):
         linha(c, M + 5 * mm, yy - 8 * mm - k * 8 * mm, W - M - 5 * mm,
               yy - 8 * mm - k * 8 * mm, HexColor("#D6C7A8"), 0.9)
-    rodape(c, pag, total, "Guia do adulto • 4 de 4")
+    rodape(c, pag, total, "Guia do adulto • parte 4 de 4")
 
 
 def certificados(c, pag, total):
@@ -358,17 +361,21 @@ def certificados(c, pag, total):
         else:
             metas = "AS SÍLABAS E AS PRIMEIRAS PALAVRAS"
         texto(c, W / 2, y + alt - 82 * mm, metas, 13, FONT_B, cor, "c")
-        coruja(c, M + 22 * mm, y + 20 * mm, 11 * mm, AMBER, AMBER_L, WHITE, CORAL, INK)
-        linha(c, W - M - 66 * mm, y + 18 * mm, W - M - 18 * mm, y + 18 * mm,
+        # mascote à esquerda; as duas linhas de assinatura ficam à direita dele
+        coruja(c, M + 22 * mm, y + 19 * mm, 10 * mm, AMBER, AMBER_L, WHITE, CORAL, INK)
+        xa = M + 40 * mm
+        xb = W / 2 + 4 * mm
+        linha(c, xa, y + 18 * mm, xa + 42 * mm, y + 18 * mm,
               HexColor("#9AA3AF"), 1)
-        texto(c, W - M - 42 * mm, y + 13 * mm, "data", 7.5, FONT, SOFT, "c")
-        linha(c, M + 30 * mm, y + 18 * mm, M + 62 * mm, y + 18 * mm,
+        texto(c, xa + 21 * mm, y + 13 * mm, "assinatura", 7.5, FONT, SOFT, "c")
+        linha(c, xb, y + 18 * mm, W - M - 20 * mm, y + 18 * mm,
               HexColor("#9AA3AF"), 1)
-        texto(c, M + 46 * mm, y + 13 * mm, "assinatura", 7.5, FONT, SOFT, "c")
+        texto(c, (xb + W - M - 20 * mm) / 2, y + 13 * mm, "data", 7.5, FONT, SOFT, "c")
 
     # linha de corte
     yy = H - M - alt - 5 * mm
     linha(c, M, yy, W - M, yy, HexColor("#B9C0C9"), 0.8, dash=[4, 4])
+    marcas_de_corte(c)
     rodape(c, pag, total, "Certificados • recorte no meio da folha")
 
 
@@ -379,7 +386,7 @@ def cartoes_pausa(c, pag, total):
     texto(c, W / 2, H - M - 15 * mm,
           "Recorte, dobre e deixe numa caixinha. Use durante a tarefa.", 9, FONT, SOFT, "c")
     cartoes = [
-        ("😮‍💨", "PAUSA DE 1 MINUTO", "Levante, beba água, volte.", TEAL, TEAL_L),
+        ("🥤", "PAUSA DE 1 MINUTO", "Levante, beba água, volte.", TEAL, TEAL_L),
         ("💪", "VOCÊ TENTOU!", "Errar faz parte. Tente de novo.", CORAL, CORAL_L),
         ("👀", "OLHA O COMEÇO", "A bolinha verde mostra onde começar.", BLUE, BLUE_L),
         ("✏️", "DEVAGAR", "Sem pressa. Letra bonita é letra calma.", PURPLE, PURPLE_L),
@@ -398,9 +405,10 @@ def cartoes_pausa(c, pag, total):
         y = H - M - 22 * mm - (row + 1) * ch
         rrect(c, x, y + 1 * mm, cw, ch - 3 * mm, 8, cor_l, cor, 1.2)
         emoji(c, fig, x + 12 * mm, y + ch / 2 + 4 * mm, 13 * mm, cor)
-        texto(c, x + 23 * mm, y + ch / 2 + 4 * mm, tit, 9, FONT_B, cor)
-        for j, ln in enumerate(quebrar(txt, cw - 28 * mm, 8, FONT)):
-            texto(c, x + 23 * mm, y + ch / 2 - 2 * mm - j * 4 * mm, ln, 8, FONT, INK)
+        texto(c, x + 25 * mm, y + ch / 2 + 4 * mm, tit, 9.5, FONT_B, cor)
+        for j, ln in enumerate(quebrar(txt, cw - 30 * mm, 8.6, FONT)):
+            texto(c, x + 25 * mm, y + ch / 2 - 2.5 * mm - j * 4.2 * mm, ln, 8.6, FONT, INK)
+    marcas_de_corte(c)
     rodape(c, pag, total, "Cartões de apoio • recorte e use durante a tarefa")
 
 
@@ -420,18 +428,18 @@ def primeira_semana(c, pag, total):
     itens = [
         ("01", "Capa + instruções", "p. 1 e 2 do caderno de letras"),
         ("01", "Folha da letra A", "p. 3 (uma só!)"),
-        ("01", "Letras que se parecem", "p. 55 — leia você primeiro"),
+        ("01", "Letras que se parecem", "p. 55 — leia antes"),
         ("05", "Guia do adulto", "p. 1 a 5, para você ler"),
-        ("05", "Quadro de conquistas", "p. 4 — cole na parede"),
+        ("05", "Quadro de conquistas", "p. 5 — cole na parede"),
     ]
     for i, (arq, o_que, det) in enumerate(itens):
         yy = y - 17 * mm - i * 8.2 * mm
         c.setFillColor(TEAL)
-        c.roundRect(M + 6 * mm, yy - 2.4 * mm, 9 * mm, 5.6 * mm, 2, stroke=0, fill=1)
-        texto(c, M + 10.5 * mm, yy - 1.2 * mm, arq, 5.8, FONT_B, WHITE, "c")
-        texto(c, M + 17 * mm, yy, o_que, 8.6, FONT_B, INK)
-        texto(c, M + 20 * mm + largura(o_que, 8.6, FONT_B), yy, "—", 8.6, FONT, SOFT)
-        texto(c, M + 24 * mm + largura(o_que, 8.6, FONT_B), yy, det, 8, FONT, SOFT)
+        c.roundRect(M + 6 * mm, yy - 2.6 * mm, 10 * mm, 6.2 * mm, 2, stroke=0, fill=1)
+        texto(c, M + 11 * mm, yy - 1.2 * mm, arq, 7.5, FONT_B, WHITE, "c")
+        texto(c, M + 19 * mm, yy, o_que, 9.4, FONT_B, INK)
+        texto(c, M + 22 * mm + largura(o_que, 9.4, FONT_B), yy, "—", 9.4, FONT, SOFT)
+        texto(c, M + 26 * mm + largura(o_que, 9.4, FONT_B), yy, det, 9, FONT, SOFT)
 
     # 2. rotina
     y2 = y - bloco_h - 5 * mm
@@ -446,9 +454,9 @@ def primeira_semana(c, pag, total):
         x = M + 5 * mm + i * cw
         rrect(c, x + 0.8 * mm, y2 - h2 + 6 * mm, cw - 1.6 * mm, h2 - 16 * mm, 6,
               WHITE, HexColor("#E3D6BC"), 0.9)
-        texto(c, x + cw / 2, y2 - h2 + h2 - 15 * mm, d, 7.6, FONT_B, AMBER, "c")
+        texto(c, x + cw / 2, y2 - h2 + h2 - 15 * mm, d, 8.5, FONT_B, AMBER, "c")
         for j, ln in enumerate(t.split("\n")):
-            texto(c, x + cw / 2, y2 - h2 + 13 * mm - j * 4 * mm, ln, 7.0, FONT, INK, "c")
+            texto(c, x + cw / 2, y2 - h2 + 12.5 * mm - j * 4.4 * mm, ln, 8, FONT, INK, "c")
 
     # 3. o que observar
     y3 = y2 - h2 - 5 * mm

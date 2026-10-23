@@ -10,14 +10,8 @@ from conteudo import MEMORIA, BINGO_POOL, LIGUE, CACA, TRILHA, DOMINO
 
 
 def _marcas_de_corte(c):
-    """Cantinhos de corte discretos em todas as páginas de jogos."""
-    for (x, y) in ((M, M), (W - M, M), (M, H - M), (W - M, H - M)):
-        c.saveState()
-        c.setStrokeColor(HexColor("#C9CDD4"))
-        c.setLineWidth(0.6)
-        c.line(x - 4, y, x + 4, y)
-        c.line(x, y - 4, x, y + 4)
-        c.restoreState()
+    """Cantinhos de corte discretos (ver base.marcas_de_corte)."""
+    marcas_de_corte(c)
 
 
 def _tabuleiro(c, x, y, w, h, cols, rows, desenhar, gap=3):
@@ -49,27 +43,38 @@ def memoria(c, pag, total, metade=0):
     texto(c, W / 2, H - M - 17 * mm, "PARA PODER JOGAR DE NOVO, COLE NO CARTOLINA ANTES DE RECORTAR.",
           8, FONT_B, AMBER, "c")
 
-    x0, y0 = M, topo
-    larg, alt = W - 2 * M, topo - M
+    x0 = M
+    larg = W - 2 * M
     cols, rows = 4, 3
     gap = 5
+    # carta com proporção de carta de baralho (mais larga que alta), centralizada na área
+    cw = (larg - gap * (cols - 1)) / cols
+    ch = min(cw * 1.45, (topo - M - gap * (rows - 1)) / rows)
+    bloco = ch * rows + gap * (rows - 1)
+    y0 = topo - (topo - M - bloco) / 2 - bloco
 
     def desenhar(i, x, y, w, h):
         pal, fig, tipo = cartas[i][2], cartas[i][1], cartas[i][0]
         cor = PALETA[i % 7]
         rrect(c, x, y, w, h, 8, WHITE, cor, 1.4)
         if tipo == "fig":
-            emoji(c, fig, x + w / 2, y + h / 2 + 3, min(w, h) * 0.60, cor)
+            emoji(c, fig, x + w / 2, y + h / 2 + 3, min(w, h) * 0.66, cor)
         else:
-            tam = 15
-            while medir(pal, tam, "Andika-Bold.ttf") > w - 8 and tam > 7:
+            tam = 21
+            while medir(pal, tam, "Andika-Bold.ttf") > w - 10 and tam > 8:
                 tam -= 0.5
             desenhar_texto(c, pal, x + w / 2 - medir(pal, tam, "Andika-Bold.ttf") / 2,
-                           y + h / 2 - 4, tam, "solido", INK, nome_fonte="Andika-Bold.ttf")
+                           y + h / 2 - 6, tam, "solido", INK, nome_fonte="Andika-Bold.ttf")
 
-    _tabuleiro(c, x0, M, larg, alt, cols, rows, desenhar, gap)
+    _tabuleiro(c, x0, y0, larg, bloco, cols, rows, desenhar, gap)
     _marcas_de_corte(c)
     rodape(c, pag, total, "Jogo da memória • recorte e brinque")
+
+
+def _pool_bingo():
+    """As mesmas palavras nas cartelas e nas fichas de sorteio."""
+    itens = MEMORIA + BINGO_POOL
+    return list(dict((p, f) for p, f in itens).items())
 
 
 def bingo(c, pag, total):
@@ -92,7 +97,7 @@ def bingo(c, pag, total):
         y = y0 - (row + 1) * ch - row * 8 * mm
         rrect(c, x, y, cw, ch, 8, WHITE, PURPLE, 1.3)
         texto(c, x + cw / 2, y + ch - 6 * mm, f"CARTELA {k + 1}", 8.5, FONT_B, PURPLE, "c")
-        pool = MEMORIA[:]
+        pool = _pool_bingo()[:]
         rnd.shuffle(pool)
         escolhas = pool[:9]
         cw2 = (cw - 6 * mm) / 3
@@ -111,6 +116,7 @@ def bingo(c, pag, total):
             desenhar_texto(c, pal, bx + cw2 / 2 - medir(pal, tam, "Andika-Bold.ttf") / 2,
                            by + ch2 / 2 - 3.5, tam, "solido", INK,
                            nome_fonte="Andika-Bold.ttf")
+    _marcas_de_corte(c)
     rodape(c, pag, total, "Bingo de palavras • 6 cartelas")
 
 
@@ -121,31 +127,30 @@ def bingo_fichas(c, pag, total):
     texto(c, W / 2, H - M - 12 * mm,
           "Recorte, dobre e coloque num saquinho. Sorteie uma por vez e mostre a figura.",
           9.5, FONT, SOFT, "c")
-    itens = MEMORIA + BINGO_POOL
-    itens = list(dict((p, f) for p, f in itens).items())
+    itens = _pool_bingo()
     cols = 4
     x0, y0 = M, H - M - 20 * mm
     larg = W - 2 * M
     cw = larg / cols
-    ch = 20 * mm
+    linhas = (len(itens) + cols - 1) // cols
+    ch = min(56 * mm, (y0 - M - 4 * mm) / linhas)
     for i, (pal, fig) in enumerate(itens):
         col, row = i % cols, i // cols
         x = x0 + col * cw
         y = y0 - (row + 1) * ch
-        if y < M:
-            break
-        rrect(c, x + 1 * mm, y + 1 * mm, cw - 2 * mm, ch - 2 * mm, 6, WHITE,
+        rrect(c, x + 1.2 * mm, y + 1.2 * mm, cw - 2.4 * mm, ch - 2.4 * mm, 7, WHITE,
               HexColor("#D3D9E1"), 0.9)
-        emoji(c, fig, x + 9 * mm, y + ch / 2, 11 * mm, PURPLE)
-        tam = 11 if len(pal) <= 6 else 9
-        desenhar_texto(c, pal, x + 17 * mm, y + ch / 2 - 4, tam, "solido", INK,
-                       nome_fonte="Andika-Bold.ttf")
+        emoji(c, fig, x + cw / 2, y + ch * 0.60, min(20 * mm, ch * 0.38), PURPLE)
+        tam = 15 if len(pal) <= 6 else 12
+        desenhar_texto(c, pal, x + cw / 2 - medir(pal, tam, "Andika-Bold.ttf") / 2,
+                       y + ch * 0.20, tam, "solido", INK, nome_fonte="Andika-Bold.ttf")
+    _marcas_de_corte(c)
     rodape(c, pag, total, "Fichas do bingo • recorte")
 
 
 def _trilha_tab(c, x, y, w, h):
     n = len(TRILHA)
-    cols = 5
+    cols = 6
     rows = (n + cols - 1) // cols
     gap = 2.5 * mm
     cw = (w - gap * (cols - 1)) / cols
@@ -193,6 +198,20 @@ def _trilha_tab(c, x, y, w, h):
             pp.close()
             c.drawPath(pp, fill=1, stroke=0)
         texto(c, cx + 1.8 * mm, cy + 1.2 * mm, str(i + 1), 6.5, FONT_B, SOFT)
+
+    # faixa de CHEGADA ocupando o resto da última linha
+    i = n - 1
+    row = i // cols
+    col = i % cols
+    if row % 2 == 1:
+        col = cols - 1 - col
+    bx = x + (col + 1) * (cw + gap)
+    bw = x + w - bx
+    cy = y + h - (row + 1) * ch - row * gap
+    if bw > 14 * mm:
+        rrect(c, bx, cy, bw, ch, 6, GREEN_L, GREEN, 1.4)
+        estrela(c, bx + bw - 12 * mm, cy + ch / 2, min(ch * 0.34, 7 * mm), GREEN)
+        texto(c, bx + 5 * mm, cy + ch / 2 - 3.2, "CHEGADA", 10, FONT_B, GREEN)
     return cw, ch
 
 
@@ -201,18 +220,15 @@ def trilha(c, pag, total):
     topo = faixa_titulo(c, "TRILHA DA LEITURA",
                         "Jogue com um dado. Leia a sílaba da casa em voz alta.",
                         GREEN, GREEN_L, etiqueta="jogo")
-    # painel de regras à direita
     larg = W - 2 * M
     y = topo - 6 * mm
-    alt = 92 * mm
+
+    # tabuleiro (26 casas + chegada, em 6 colunas)
+    alt = 100 * mm
     rrect(c, M, y - alt, larg, alt, 10, WHITE, LINE, 1)
     _trilha_tab(c, M + 4 * mm, y - alt + 4 * mm, larg - 8 * mm, alt - 8 * mm)
 
-    # legenda + regras
-    y2 = y - alt - 8 * mm
-    h_regras = 62 * mm
-    rrect(c, M, y2 - h_regras, larg, h_regras, 10, HexColor("#F7F9FB"), LINE, 1)
-    texto(c, M + 6 * mm, y2 - 8 * mm, "COMO JOGAR", 10, FONT_B, GREEN)
+    # regras (altura medida pelo texto)
     regras = [
         "Cada jogador escolhe uma tampinha para andar na trilha.",
         "Jogue o dado e ande o número de casas.",
@@ -220,54 +236,74 @@ def trilha(c, pag, total):
         "Casa verde (estrela): avance 1 casa. Casa laranja (seta): volte 1 casa. Casa amarela (dado): jogue de novo.",
         "Ganham todos que chegam ao fim. Não precisa ter só um vencedor.",
     ]
-    yy = y2 - 15 * mm
-    for i, r in enumerate(regras):
+    blocos = [quebrar(r, larg - 26 * mm, 9.2, FONT) for r in regras]
+    h_regras = 13 * mm + sum(len(b) * 4.3 * mm + 2.6 * mm for b in blocos) + 3 * mm
+    y2 = y - alt - 6 * mm
+    rrect(c, M, y2 - h_regras, larg, h_regras, 10, HexColor("#F7F9FB"), LINE, 1)
+    texto(c, M + 6 * mm, y2 - 8 * mm, "COMO JOGAR", 10, FONT_B, GREEN)
+    yy = y2 - 16 * mm
+    for i, linhas in enumerate(blocos):
         numero_passo(c, M + 9 * mm, yy + 2.2 * mm, i + 1, 4.4, WHITE, GREEN, 6.8)
-        linhas = quebrar(r, larg - 24 * mm, 8.4, FONT)
         for j, ln in enumerate(linhas):
-            texto(c, M + 14 * mm, yy - j * 4.0 * mm, ln, 8.4, FONT, INK)
-        yy -= (len(linhas) * 4.0 + 2.4) * mm
+            texto(c, M + 15 * mm, yy - j * 4.3 * mm, ln, 9.2, FONT, INK)
+        yy -= (len(linhas) * 4.3 + 2.6) * mm
 
     # dado e peões para recortar
     y_d = y2 - h_regras - 6 * mm
-    if y_d > M + 42 * mm:
-        _dado_e_peoes(c, M, M + 4 * mm, larg, y_d - M - 4 * mm)
-
+    _dado_e_peoes(c, M, M + 6 * mm, larg, y_d - M - 6 * mm)
     rodape(c, pag, total, "Trilha da leitura • use tampinhas, feijões ou os peões desta folha")
 
 
 def _dado_e_peoes(c, x, y, w, h):
+    """Dado (planificação em cruz) e 4 peões para recortar."""
     rrect(c, x, y, w, h, 10, WHITE, LINE, 1)
-    texto(c, x + 5 * mm, y + h - 7 * mm, "RECORTE AQUI: DADO E PEÕES", 8, FONT_B, GREEN)
-    linha_de_corte(c, x + 4 * mm, y + 4 * mm, x + w - 4 * mm, y + 4 * mm)
-    # dado (planificação 3x3 simplificada: 6 faces em cruz)
-    lado = min(11 * mm, (h - 20 * mm) / 2)
+    texto(c, x + 5 * mm, y + h - 7 * mm, "RECORTE AQUI: DADO E PEÕES", 9, FONT_B, GREEN)
+
+    lado = min(10 * mm, (h - 17 * mm) / 4)
     ox = x + 12 * mm
-    oy = y + 10 * mm
-    faces = [(0, 1, 1), (1, 0, 2), (1, 1, 6), (1, 2, 3), (2, 1, 4), (3, 1, 5)]
+    oy = y + 6 * mm
+    faces = {(1, 0): 2, (0, 1): 1, (1, 1): 6, (2, 1): 4, (1, 2): 3, (1, 3): 5}
     pos = {1: [(0.5, 0.5)], 2: [(0.25, 0.75), (0.75, 0.25)],
            3: [(0.25, 0.75), (0.5, 0.5), (0.75, 0.25)],
            4: [(0.25, 0.25), (0.75, 0.25), (0.25, 0.75), (0.75, 0.75)],
            5: [(0.25, 0.25), (0.75, 0.25), (0.5, 0.5), (0.25, 0.75), (0.75, 0.75)],
            6: [(0.25, 0.2), (0.75, 0.2), (0.25, 0.5), (0.75, 0.5), (0.25, 0.8), (0.75, 0.8)]}
-    for cx, cy, n in faces:
-        rrect(c, ox + cx * lado, oy + (3 - cy) * lado, lado, lado, 2, WHITE, INK, 1)
+    for (col, row), n in faces.items():
+        fx = ox + col * lado
+        fy = oy + (3 - row) * lado
+        rrect(c, fx, fy, lado, lado, 1.5, WHITE, INK, 1)
         for (px, py) in pos[n]:
             c.setFillColor(INK)
-            c.circle(ox + cx * lado + px * lado, oy + (3 - cy) * lado + py * lado,
-                     lado * 0.075, stroke=0, fill=1)
-    # peões (círculos coloridos)
-    px0 = x + 70 * mm
-    labels = ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4"]
+            c.circle(fx + px * lado, fy + py * lado, lado * 0.075, stroke=0, fill=1)
+
+    # dobras (tracejado cinza sobre as arestas internas)
+    c.saveState()
+    c.setStrokeColor(HexColor("#9AA3AF"))
+    c.setLineWidth(0.7)
+    c.setDash(3, 3)
+    dobras = [((ox + lado, oy + 3 * lado), (ox + 2 * lado, oy + 3 * lado)),
+              ((ox + lado, oy + 2 * lado), (ox + 2 * lado, oy + 2 * lado)),
+              ((ox + lado, oy + 1 * lado), (ox + 2 * lado, oy + 1 * lado)),
+              ((ox + lado, oy + 2 * lado), (ox + lado, oy + 3 * lado)),
+              ((ox + 2 * lado, oy + 2 * lado), (ox + 2 * lado, oy + 3 * lado))]
+    for (x1, y1), (x2, y2) in dobras:
+        c.line(x1, y1, x2, y2)
+    c.restoreState()
+
+    texto(c, ox + lado * 1.5, oy - 4 * mm,
+          "dobre nas linhas • cole nas abas", 7.5, FONT, SOFT, "c")
+
+    # peões
+    px0 = x + 68 * mm
     for i in range(4):
-        cx = px0 + (i % 4) * 26 * mm
-        cy = y + h - 24 * mm
+        cx = px0 + i * 27 * mm
+        cy = y + h / 2 + 3 * mm
         c.setFillColor(PALETA[i])
-        c.circle(cx, cy, 8 * mm, stroke=0, fill=1)
+        c.circle(cx, cy, 8.5 * mm, stroke=0, fill=1)
         c.setFillColor(WHITE)
         c.circle(cx, cy, 4.5 * mm, stroke=0, fill=1)
-        texto(c, cx, cy - 2.5, str(i + 1), 7, FONT_B, PALETA[i], "c")
-        texto(c, cx, cy - 11 * mm, labels[i], 6.5, FONT, SOFT, "c")
+        texto(c, cx, cy - 2.5, str(i + 1), 8, FONT_B, PALETA[i], "c")
+        texto(c, cx, cy - 12.5 * mm, "Jogador %d" % (i + 1), 8, FONT, SOFT, "c")
 
 
 def ligue(c, pag, total, item):
@@ -314,7 +350,7 @@ def ligue(c, pag, total, item):
 
     yf = y - len(item) * alt - 6 * mm
     rrect(c, M, yf - 26 * mm, larg, 26 * mm, 10, AMBER_L, None)
-    texto(c, M + 5 * mm, yf - 8 * mm, "VALE MAIS DE UMA TENTATIVA", 8.5, FONT_B, AMBER)
+    texto(c, M + 5 * mm, yf - 8 * mm, "VALE MAIS DE UMA TENTATIVA", 9.5, FONT_B, AMBER)
     paragrafo(c, M + 5 * mm, yf - 14 * mm, larg - 10 * mm,
               "Se ligar errado, apague e tente de novo. O erro mostra qual som ainda "
               "precisa ser treinado — não é motivo para parar a atividade.", 8.4, FONT, INK)
@@ -330,7 +366,7 @@ def caca_palavras(c, pag, total, item):
     # grade
     linhas, cols = len(grade), max(len(r) for r in grade)
     y0 = topo - 8 * mm
-    gh = 78 * mm
+    gh = min(112 * mm, y0 - M - 92 * mm)
     cw = (larg - 10 * mm) / cols
     ch = gh / linhas
     x0 = M + 5 * mm
@@ -340,7 +376,8 @@ def caca_palavras(c, pag, total, item):
             cy = y0 - (i + 1) * ch
             rrect(c, cx + 0.4 * mm, cy + 0.4 * mm, cw - 0.8 * mm, ch - 0.8 * mm,
                   2, None, HexColor("#DCE2E9"), 0.6)
-            texto(c, cx + cw / 2, cy + ch / 2 - 3.4, ch_, 11, FONT_B, INK, "c")
+            texto(c, cx + cw / 2, cy + ch / 2 - ch * 0.20, ch_, min(15, ch * 0.46),
+                  FONT_B, INK, "c")
     # palavras + dicas
     yb = y0 - gh - 8 * mm
     texto(c, M, yb, "PALAVRAS PARA ENCONTRAR", 9, FONT_B, CORAL)
@@ -356,10 +393,19 @@ def caca_palavras(c, pag, total, item):
         # caixinha de marcar
         checkbox(c, x + cols_w - 10 * mm, yy - 2, 5 * mm, HexColor("#B9C0C9"), 1)
 
-    # linhas para escrever as palavras encontradas
-    y_esc = M + 26 * mm
-    texto(c, M, y_esc + 14 * mm, "ESCREVA AS PALAVRAS QUE ENCONTROU:", 8.5, FONT_B, SOFT)
-    for k in range(3):
+    # espaço para copiar as palavras encontradas
+    n_lin_dicas = (len(dicas) + 1) // 2
+    y_d = yb - n_lin_dicas * 12 * mm - 4 * mm
+    rrect(c, M, y_d - 13 * mm, larg, 13 * mm, 8, CORAL_L, None)
+    texto(c, M + 5 * mm, y_d - 8.5 * mm,
+          "Todas estão na horizontal. Passe o dedo da esquerda para a direita, linha por linha.",
+          9.5, FONT, INK)
+
+    y_esc = y_d - 22 * mm
+    texto(c, M, y_esc, "ESCREVA AS PALAVRAS QUE ENCONTROU:", 9.5, FONT_B, SOFT)
+    y_esc -= 8 * mm
+    n_lin = max(2, int((y_esc - (M + 6 * mm)) / (9 * mm)))
+    for k in range(n_lin):
         linha(c, M, y_esc - k * 9 * mm, W - M, y_esc - k * 9 * mm,
               HexColor("#D3DAE2"), 1)
     rodape(c, pag, total, "Caça-palavras • palavras na horizontal")
@@ -393,10 +439,78 @@ def domino(c, pag, total):
                        y + h - 10 * mm, 13, "solido", INK, nome_fonte="Andika-Bold.ttf")
         desenhar_texto(c, b, x + cw / 2 - 2 * mm - medir(b, 13, "Andika-Bold.ttf") / 2,
                        y + 5 * mm, 13, "solido", PURPLE, nome_fonte="Andika-Bold.ttf")
+    _marcas_de_corte(c)
     rodape(c, pag, total, "Dominó de sílabas • recorte")
 
 
 # ------------------------------------------------------------------ extras
+def instrucoes_jogos(c, pag, total):
+    """Página de instruções do caderno de jogos (o material pede: capa + instrução de uso)."""
+    fundo(c)
+    topo = faixa_titulo(c, "COMO USAR OS JOGOS",
+                        "Para o adulto: 3 minutos lendo, meses brincando.",
+                        AMBER, AMBER_L, etiqueta="leia primeiro")
+    larg = W - 2 * M
+
+    # ---- passos de preparo
+    passos = [
+        ("1", "IMPRIMA", "Cartas e fichas ficam melhores em papel mais grosso (120 g ou cartolina)."),
+        ("2", "RECORTE NOS CANTINHOS", "As cruzinhas dos cantos mostram onde cortar. Corte reto, sem ponta."),
+        ("3", "GUARDE EM ENVELOPES", "Um envelope por jogo. Jogo perdido não volta; envelope mantém tudo junto."),
+        ("4", "ESCOLHA UM POR VEZ", "Um jogo por dia. Guarde antes de cansar: na próxima vez ela quer voltar."),
+    ]
+    y = topo - 6 * mm
+    for num, tit, txt in passos:
+        h = 18 * mm
+        rrect(c, M, y - h, larg, h, 9, WHITE, LINE, 1)
+        numero_passo(c, M + 9 * mm, y - h / 2, num, 5.6, WHITE, AMBER, 9)
+        texto(c, M + 18 * mm, y - 7 * mm, tit, 9.8, FONT_B, INK)
+        for j, ln in enumerate(quebrar(txt, larg - 26 * mm, 9, FONT)):
+            texto(c, M + 18 * mm, y - 12.4 * mm - j * 4.2 * mm, ln, 9, FONT, SOFT)
+        y -= h + 3 * mm
+
+    # ---- ordem dos jogos
+    y -= 2 * mm
+    texto(c, M, y - 2 * mm, "ORDEM SUGERIDA — DO MAIS FÁCIL AO MAIS DIFÍCIL", 9.5, FONT_B, AMBER)
+    y -= 8 * mm
+    jogos = [
+        ("🃏", "Memória", "figura + palavra", "reconhecer a palavra inteira"),
+        ("🔗", "Ligue a figura à palavra", "passe o dedo", "juntar som e escrita"),
+        ("🔔", "Bingo", "6 cartelas", "achar a palavra no meio de outras"),
+        ("🔍", "Caça-palavras", "3 níveis", "olhar letra por letra"),
+        ("🁢", "Dominó de sílabas", "2 folhas", "montar palavras por sílaba"),
+        ("🏁", "Trilha da leitura", "dado e peões", "ler rápido, sem travar"),
+        ("✏️", "Forca", "3 rodadas", "lembrar das letras sem apoio"),
+    ]
+    passo = (y - (M + 46 * mm)) / len(jogos)
+    for i, (fig, tit, sub, objetivo) in enumerate(jogos):
+        yy = y - i * passo
+        h = min(passo - 2.4 * mm, 15 * mm)
+        rrect(c, M, yy - h, larg, h, 7, WHITE, HexColor("#E8E1D3"), 1)
+        emoji(c, fig, M + 8 * mm, yy - h / 2, 8 * mm, AMBER)
+        texto(c, M + 17 * mm, yy - h / 2 - 3.4, tit, 10, FONT_B, INK)
+        texto(c, M + 72 * mm, yy - h / 2 - 3, sub, 9, FONT, SOFT)
+        texto(c, W - M - 5 * mm, yy - h / 2 - 3, objetivo, 9, FONT, INK, "r")
+
+    # ---- caixa final: o que fazer quando erra
+    yb = M + 4 * mm
+    hb = 40 * mm
+    rrect(c, M, yb, larg, hb, 10, GREEN_L, None)
+    texto(c, M + 6 * mm, yb + hb - 9 * mm, "QUANDO ELA ERRA", 9.5, FONT_B, GREEN)
+    dicas = [
+        "Não corrija tudo de uma vez: escolha 1 coisa por rodada.",
+        "Leia junto, devagar, e peça só que ela repita a parte certa.",
+        "Se errar duas vezes seguidas, pare o jogo e volte amanhã — erro repetido vira desânimo.",
+        "Ganhar não é o objetivo. O objetivo é ler. Deixe ela ganhar algumas vezes.",
+    ]
+    for i, t in enumerate(dicas):
+        for j, ln in enumerate(quebrar(t, larg - 16 * mm, 9, FONT)):
+            texto(c, M + 6 * mm, yb + hb - 17 * mm - i * 6.4 * mm - j * 4.2 * mm,
+                  ("•  " if j == 0 else "   ") + ln, 9, FONT, INK)
+    marcas_de_corte(c)
+    rodape(c, pag, total)
+
+
 def capa_jogos(c, pag, total):
     fundo(c, CREAM)
     c.setFillColor(AMBER)
@@ -434,7 +548,7 @@ def capa_jogos(c, pag, total):
         texto(c, W - M - 14 * mm, yy - 5 * mm, sub, 8, FONT, SOFT, "r")
 
     rrect(c, M + 8 * mm, box_y, W - 2 * M - 16 * mm, box_h, 9, AMBER_L, None)
-    texto(c, M + 16 * mm, box_topo - 8.5 * mm, "ANTES DE JOGAR", 8.5, FONT_B, AMBER)
+    texto(c, M + 16 * mm, box_topo - 8.5 * mm, "ANTES DE JOGAR", 9, FONT_B, AMBER)
     for i, t in enumerate(dicas):
         texto(c, M + 16 * mm, box_topo - 16.5 * mm - i * 6.6 * mm, "•  " + t, 8.6,
               FONT, INK)
@@ -464,6 +578,7 @@ def trilha_fichas(c, pag, total):
               HexColor("#C9D6C6"), 0.9)
         desenhar_texto(c, s, x + cw / 2 - medir(s, 13, "Andika-Bold.ttf") / 2,
                        y + ch / 2 - 4, 13, "solido", GREEN, nome_fonte="Andika-Bold.ttf")
+    _marcas_de_corte(c)
     rodape(c, pag, total, "Fichas da trilha • recorte")
 
 
@@ -476,7 +591,7 @@ def caca_2(c, pag, total):
                     ["M", "A", "L", "H", "A", "D", "A", "D"],
                     ["N", "I", "N", "H", "O", "G", "A", "T"],
                     ["F", "I", "L", "H", "O", "P", "A", "T"],
-                    ["G", "A", "L", "H", "A", "S", "O", "L"],
+                    ["G", "A", "L", "I", "N", "H", "A", "S"],
                     ["C", "H", "A", "V", "E", "M", "E", "L"],
                     ["B", "A", "N", "H", "O", "V", "A", "C"]],
                    [("CHUVA", "🌧️"), ("MALHA", "🧶"), ("NINHO", "🪹"),
@@ -498,13 +613,22 @@ def caca_3(c, pag, total):
                     ("SAPATO", "👟"), ("ELEFANTE", "🐘"), ("PIPOCA", "🍿")])
 
 
+def _garantir_palavras(grade, dicas):
+    """Toda palavra da lista precisa existir na grade (na horizontal)."""
+    linhas = ["".join(r) for r in grade]
+    faltando = [p for p, _ in dicas if not any(p in l for l in linhas)]
+    if faltando:
+        raise ValueError("caça-palavras sem a palavra: " + ", ".join(faltando))
+
+
 def _caca_generico(c, pag, total, titulo, grade, dicas):
+    _garantir_palavras(grade, dicas)
     fundo(c)
     topo = faixa_titulo(c, "CAÇA-PALAVRAS", titulo, CORAL, CORAL_L, etiqueta="jogo")
     larg = W - 2 * M
     linhas, cols = len(grade), max(len(r) for r in grade)
     y0 = topo - 8 * mm
-    gh = min(96 * mm, y0 - M - 34 * mm)
+    gh = min(112 * mm, y0 - M - 60 * mm)
     cw = (larg - 10 * mm) / cols
     ch = gh / linhas
     x0 = M + 5 * mm
@@ -514,22 +638,35 @@ def _caca_generico(c, pag, total, titulo, grade, dicas):
             cy = y0 - (i + 1) * ch
             rrect(c, cx + 0.4 * mm, cy + 0.4 * mm, cw - 0.8 * mm, ch - 0.8 * mm,
                   2, None, HexColor("#DCE2E9"), 0.6)
-            texto(c, cx + cw / 2, cy + ch / 2 - 3.4, ch_, 11, FONT_B, INK, "c")
+            texto(c, cx + cw / 2, cy + ch / 2 - ch * 0.20, ch_, min(14, ch * 0.44),
+                  FONT_B, INK, "c")
     yb = y0 - gh - 10 * mm
-    texto(c, M, yb, "PALAVRAS PARA ENCONTRAR", 9, FONT_B, CORAL)
-    yb -= 8 * mm
+    texto(c, M, yb, "PALAVRAS PARA ENCONTRAR", 9.5, FONT_B, CORAL)
+    yb -= 9 * mm
     cols_w = larg / 2
     for i, (pal, fig) in enumerate(dicas):
         col, row = i % 2, i // 2
         x = M + col * cols_w
-        yy = yb - row * 11 * mm
-        emoji(c, fig, x + 6 * mm, yy + 1 * mm, 9 * mm, CORAL)
-        desenhar_texto(c, pal, x + 13 * mm, yy - 2, 11, "solido", INK,
+        yy = yb - row * 13 * mm
+        emoji(c, fig, x + 6 * mm, yy + 1 * mm, 10 * mm, CORAL)
+        desenhar_texto(c, pal, x + 14 * mm, yy - 2, 12.5, "solido", INK,
                        nome_fonte="Andika-Bold.ttf")
-        checkbox(c, x + cols_w - 10 * mm, yy - 2, 5 * mm, HexColor("#B9C0C9"), 1)
-    y_esc = M + 22 * mm
-    texto(c, M, y_esc + 12 * mm, "ESCREVA AS PALAVRAS QUE ENCONTROU:", 8.5, FONT_B, SOFT)
-    for k in range(2):
+        checkbox(c, x + cols_w - 10 * mm, yy - 2, 5.5 * mm, HexColor("#B9C0C9"), 1)
+
+    # dica de busca
+    n_lin_dicas = (len(dicas) + 1) // 2
+    y_d = yb - n_lin_dicas * 13 * mm - 2 * mm
+    rrect(c, M, y_d - 13 * mm, larg, 13 * mm, 8, CORAL_L, None)
+    texto(c, M + 5 * mm, y_d - 8.5 * mm,
+          "Todas estão na horizontal. Passe o dedo da esquerda para a direita, linha por linha.",
+          9.5, FONT, INK)
+
+    # espaço para copiar as palavras encontradas (aproveita o resto da folha)
+    y_esc = y_d - 22 * mm
+    texto(c, M, y_esc, "ESCREVA AS PALAVRAS QUE ENCONTROU:", 9.5, FONT_B, SOFT)
+    y_esc -= 8 * mm
+    n_lin = max(2, int((y_esc - (M + 6 * mm)) / (9 * mm)))
+    for k in range(n_lin):
         linha(c, M, y_esc - k * 9 * mm, W - M, y_esc - k * 9 * mm,
               HexColor("#D3DAE2"), 1)
     rodape(c, pag, total, "Caça-palavras • palavras na horizontal")
@@ -562,6 +699,7 @@ def domino_2(c, pag, total):
                        y + h - 10 * mm, 13, "solido", INK, nome_fonte="Andika-Bold.ttf")
         desenhar_texto(c, b, x + cw / 2 - 2 * mm - medir(b, 13, "Andika-Bold.ttf") / 2,
                        y + 5 * mm, 13, "solido", PURPLE, nome_fonte="Andika-Bold.ttf")
+    _marcas_de_corte(c)
     rodape(c, pag, total, "Dominó de sílabas • parte 2 • recorte")
 
 
@@ -609,7 +747,7 @@ def forca(c, pag, total):
     # figuras para sortear
     y2 = M + 38 * mm
     rrect(c, M, M + 6 * mm, larg, y2 - M - 6 * mm, 10, AMBER_L, None)
-    texto(c, M + 5 * mm, y2 - 7 * mm, "FIGURAS PARA SORTEAR (recorte ou aponte)", 8.5,
+    texto(c, M + 5 * mm, y2 - 7 * mm, "FIGURAS PARA SORTEAR (recorte ou aponte)", 9,
           FONT_B, AMBER)
     for i, (pal, fig) in enumerate(MEMORIA[:10]):
         cx = M + 13 * mm + i * ((larg - 20 * mm) / 10)

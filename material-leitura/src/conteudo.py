@@ -31,7 +31,12 @@ ALFABETO = {
     "Z": ("ZEBRA",      "🦓", 3),
 }
 
-ORDEM = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# Ordem de ensino (não é a ordem alfabética): vogais, consoantes regulares
+# e, por último, as letras de uso raro ou som irregular.
+ORDEM = "AEIOUMPBDTLCSRNFVGJZXQHKWY"
+
+# Ordem alfabética: usada no mural da parede e no bingo (só como repertório).
+ALFABETO_AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Rima/apoio de memória: "B de bola, b de bola"
 DICA_LETRA = {
@@ -75,6 +80,8 @@ FAMILIAS = [
                              ("FOGO", "🔥", "FO"), ("FITA", "🎀", "FI")]),
     ("G", "GA GO GU", [("GATO", "🐱", "GA"), ("GALO", "🐔", "GA"),
                        ("GOTA", "💧", "GO"), ("GUDE", "🧩", "GU")]),
+    ("J", "JA JE JI JO JU", [("JACARÉ", "🐊", "JA"), ("JANELA", "🪟", "JA"),
+                             ("JIPE", "🚙", "JI"), ("JOGO", "🎮", "JO")]),
     ("L", "LA LE LI LO LU", [("LUA", "🌙", "LU"), ("LATA", "🥫", "LA"),
                              ("LEÃO", "🦁", "LE"), ("LIVRO", "📖", "LI")]),
     ("M", "MA ME MI MO MU", [("MAÇÃ", "🍎", "MA"), ("MALA", "🧳", "MA"),
@@ -91,11 +98,10 @@ FAMILIAS = [
                              ("TIGRE", "🐯", "TI"), ("TOCA", "🕳️", "TO")]),
     ("V", "VA VE VI VO VU", [("VACA", "🐄", "VA"), ("VELA", "🕯️", "VE"),
                              ("VILA", "🏘️", "VI"), ("VOVÓ", "👵", "VO")]),
-    ("J", "JA JE JI JO JU", [("JACARÉ", "🐊", "JA"), ("JANELA", "🪟", "JA"),
-                             ("JIPE", "🚙", "JI"), ("JOGO", "🎮", "JO")]),
     ("Z", "ZA ZE ZI ZO ZU", [("ZEBRA", "🦓", "ZE"), ("ZERO", "0", "ZE"),
                              ("ZINCO", "🔩", "ZI"), ("ZOOLÓGICO", "🦁", "ZO")]),
 ]
+
 
 # Letras que se parecem: (letra, dica de memória)
 PARECIDAS = [
@@ -187,7 +193,9 @@ TRILHA = [
     ("MA", 0), ("PO", 0), ("", 2), ("NE", 0), ("GA", 0),
     ("VA", 0), ("", 2), ("RI", 0), ("FI", 0), ("", 3),
     ("BO", 0), ("", 2), ("CU", 0), ("DE", 0), ("FO", 0),
+    ("TE", 0),
 ]
+# 26 casas (uma por letra do alfabeto) + a casa de CHEGADA, desenhada pelo tabuleiro.
 
 # Sílabas complexas
 COMPLEXAS = [

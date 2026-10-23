@@ -30,8 +30,8 @@ Nada de imagens coloridas que concorram com a tarefa: cor só para hierarquizar.
 | `01-caderno-do-alfabeto.pdf` | Capa, instruções, 26 folhas (maiúsculas), 26 folhas (minúsculas), letras parecidas, mural, bingo, mapa de progresso | ~59 |
 | `02-silabas-e-palavras.pdf` | 15 famílias silábicas, 9 grupos de sílabas complexas, escada de palavras, leitura rápida | ~28 |
 | `03-leitura-e-escrita.pdf` | 5 níveis de frases, histórias curtas, ditado de figuras, folhas de escrita, autoavaliação | ~15 |
-| `04-jogos-e-fichas.pdf` | Memória, bingo (6 cartelas + fichas), trilha com dado, ligue-ligue, 3 caça-palavras, dominó, forca | ~16 |
-| `05-guia-do-adulto.pdf` | Guia TDAH, rotina de 10 min, quadro de recompensas, registro de progresso, cartões de pausa, certificados | ~7 |
+| `04-jogos-e-fichas.pdf` | Como usar os jogos, memória (24 cartas), bingo (6 cartelas + fichas), trilha de 26 casas com dado e peões, ligue-ligue, 3 caça-palavras, dominó, forca | ~17 |
+| `05-guia-do-adulto.pdf` | Guia TDAH, rotina de 10 min, quadro de recompensas, registro de progresso, cartões de pausa, certificados | ~8 |
 
 ### Regras de design obrigatórias (TDAH-friendly)
 1. **Uma tarefa por página.** Nunca duas atividades competindo na mesma folha.

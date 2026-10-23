@@ -71,6 +71,7 @@ def caderno_jogos():
     d = Doc("04-jogos-e-fichas.pdf", "Jogos e Fichas",
             "Memória, bingo, trilha, ligue-ligue, caça-palavras e dominó")
     d.add(pj.capa_jogos)
+    d.add(pj.instrucoes_jogos)
     d.add(pj.memoria, 0)
     d.add(pj.memoria, 1)
     d.add(pj.bingo)

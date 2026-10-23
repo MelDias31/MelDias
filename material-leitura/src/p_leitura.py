@@ -151,7 +151,7 @@ def leitura_frases(c, pag, total, item):
         for k in range(2):
             linha(c, xa, yy, M + larg - 6 * mm, yy, HexColor("#D3DAE2"), 1.1)
             yy -= 9 * mm
-        texto(c, M + larg - 6 * mm, y - h + 4 * mm, "leia 2 vezes e marque:", 7.5,
+        texto(c, M + larg - 6 * mm, y - h + 4 * mm, "leia 2 vezes e marque:", 9,
               FONT, SOFT, "r")
         for k in range(2):
             checkbox(c, M + larg - 18 * mm + k * 8 * mm, y - h + 7 * mm, 6 * mm,
@@ -160,11 +160,11 @@ def leitura_frases(c, pag, total, item):
 
     # rodapé instrução
     rrect(c, M, M + 3 * mm, larg, 17 * mm, 8, AMBER_L, None)
-    texto(c, M + 5 * mm, M + 13 * mm, "COMO LER:", 8.5, FONT_B, AMBER)
+    texto(c, M + 5 * mm, M + 13 * mm, "COMO LER:", 9, FONT_B, AMBER)
     paragrafo(c, M + 26 * mm, M + 13 * mm, larg - 31 * mm,
               "Aponte cada sílaba com o dedo e leia devagar. Depois leia junto com a "
               "criança e, por último, deixe ela ler sozinha. Adivinhar pelo desenho "
-              "também vale — faz parte do caminho.", 8.5, FONT, INK)
+              "também vale — faz parte do caminho.", 9, FONT, INK)
     rodape(c, pag, total)
 
 
@@ -205,24 +205,9 @@ def leitura_textos(c, pag, total):
             checkbox(c, W - M - 11 * mm, yy - 1 * mm, 5.5 * mm,
                      HexColor("#B9C0C9"), 1)
             yy -= 9.2 * mm
-        texto(c, W - M - 25 * mm, y - h + 4 * mm, "marque cada linha lida", 7.5,
+        texto(c, W - M - 25 * mm, y - h + 4 * mm, "marque cada linha lida", 9,
               FONT, SOFT, "r")
         y -= h + 4 * mm
-    rodape(c, pag, total)
-
-
-def escrita(c, pag, total):
-    """Folha pautada grande para treinar palavras ditadas."""
-    fundo(c)
-    topo = faixa_titulo(c, "FOLHA DE ESCRITA", "Use esta folha para o ditado das palavras.",
-                        BLUE, BLUE_L, etiqueta="escrita")
-    y = topo - 8 * mm
-    alt = 22 * mm
-    n = int((y - (M + 6 * mm)) / (alt + 4 * mm))
-    for i in range(n):
-        pauta(c, M, y - alt, W - 2 * M, alt, HexColor("#D5DCE5"))
-        texto(c, M - 3 * mm, y - alt - 2 * mm, "", 8, FONT, SOFT)
-        y -= alt + 4 * mm
     rodape(c, pag, total)
 
 
@@ -285,7 +270,7 @@ def capa(c, pag, total):
     yb = yy + 21 * mm - 16 * mm - 7 * mm
     rrect(c, M + 12 * mm, M + 12 * mm, W - 2 * M - 24 * mm, yb - M - 12 * mm, 9,
           AMBER_L, None)
-    texto(c, M + 20 * mm, yb - 9 * mm, "ANTES DE COMEÇAR", 8.5, FONT_B, AMBER)
+    texto(c, M + 20 * mm, yb - 9 * mm, "ANTES DE COMEÇAR", 9, FONT_B, AMBER)
     for i, t in enumerate([
             "Leia junto, apontando cada sílaba com o dedo.",
             "Deixe ela adivinhar pelo desenho: faz parte do caminho.",
@@ -331,7 +316,7 @@ def textos_2(c, pag, total):
             checkbox(c, W - M - 11 * mm, yy - 1 * mm, 5.5 * mm,
                      HexColor("#B9C0C9"), 1)
             yy -= 9.2 * mm
-        texto(c, W - M - 25 * mm, y - h + 4 * mm, "marque cada linha lida", 7.5,
+        texto(c, W - M - 25 * mm, y - h + 4 * mm, "marque cada linha lida", 9,
               FONT, SOFT, "r")
         y -= h + 4 * mm
     rodape(c, pag, total)
@@ -387,19 +372,23 @@ def escrita(c, pag, total, indice=0):
         linha(c, M + 6 * mm, y - 17 * mm, W - M - 6 * mm, y - 17 * mm,
               HexColor("#9AA3AF"), 1.2)
         texto(c, M + 6 * mm, y - 23 * mm,
-              "Escreva com letra grande. Depois conte quantas letras tem seu nome.", 8,
+              "Escreva com letra grande. Depois conte quantas letras tem seu nome.", 9,
               FONT, SOFT)
         y -= 31 * mm
     else:
-        h = 16 * mm if indice != 2 else 18 * mm
+        # altura da caixa medida pelo conteúdo (em frases o texto não pode vazar)
+        if indice == 2:
+            h = 10 * mm + len(banco) * 5.4 * mm + 2 * mm
+        else:
+            h = 18 * mm
         rrect(c, M, y - h, larg, h, 8, BLUE_L, None)
-        texto(c, M + 5 * mm, y - 6 * mm, "COPIE DAQUI:", 7.5, FONT_B, BLUE)
+        texto(c, M + 5 * mm, y - 6.5 * mm, "COPIE DAQUI:", 9, FONT_B, BLUE)
         xx = M + 32 * mm
-        yy = y - 11 * mm
+        yy = y - 12 * mm
         for item in banco:
             if indice == 2:
-                texto(c, M + 5 * mm, yy, item, 9, FONT_B, INK)
-                yy -= 4.6 * mm
+                texto(c, M + 5 * mm, yy, item, 11, FONT_B, INK)
+                yy -= 5.4 * mm
             else:
                 w = largura(item, 11, FONT_B) + 7 * mm
                 if xx + w > W - M - 5 * mm:

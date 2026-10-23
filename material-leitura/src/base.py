@@ -368,6 +368,17 @@ def tesoura(c, x, y, tam=8, cor=SOFT):
     c.restoreState()
 
 
+def marcas_de_corte(c, cor="#C9CDD4"):
+    """Cruzinhas nos quatro cantos da margem: guia para a tesoura."""
+    for (x, y) in ((M, M), (W - M, M), (M, H - M), (W - M, H - M)):
+        c.saveState()
+        c.setStrokeColor(HexColor(cor))
+        c.setLineWidth(0.6)
+        c.line(x - 4, y, x + 4, y)
+        c.line(x, y - 4, x, y + 4)
+        c.restoreState()
+
+
 def linha_de_corte(c, x1, y1, x2, y2):
     linha(c, x1, y1, x2, y2, HexColor("#B9C0C9"), 0.8, dash=[4, 4])
     tesoura(c, (x1 + x2) / 2 - 4, (y1 + y2) / 2 + 5, 9, HexColor("#9AA3AF"))

@@ -35,8 +35,8 @@ def palavra_com_destaque(c, palavra, destaque, x, y, size, cor_dest, cor_resto=I
 
 def familia(c, pag, total, item):
     letra, silabas, palavras = item
-    idx = ["B", "C", "D", "F", "G", "L", "M", "N", "P", "R", "S", "T",
-           "V", "J", "Z"].index(letra) % 7
+    idx = ["B", "C", "D", "F", "G", "J", "L", "M", "N", "P", "R", "S", "T",
+           "V", "Z"].index(letra) % 7
     cor, cor_l = PALETA[idx], PALETA_L[idx]
     fundo(c)
     lista = silabas.split()
@@ -187,7 +187,7 @@ def complexas(c, pag, total, item):
 
     # dica final
     rrect(c, M, M + 3 * mm, larg_total, 16 * mm, 8, AMBER_L, None)
-    texto(c, M + 5 * mm, M + 13 * mm, "DICA:", 8.5, FONT_B, AMBER)
+    texto(c, M + 5 * mm, M + 13 * mm, "DICA:", 9, FONT_B, AMBER)
     paragrafo(c, M + 19 * mm, M + 13 * mm, larg_total - 24 * mm,
               "Leia as sílabas devagar, apontando com o dedo. Depois leia as palavras "
               "duas vezes: uma soletrando e outra de uma vez só.", 8.4, FONT, INK)
@@ -219,7 +219,7 @@ def niveis(c, pag, total):
                            y - 41 * mm, size, "solido", INK, nome_fonte="Andika-Bold.ttf")
             # quadradinho: já leu?
             checkbox(c, cx + cw / 2 - 3.2 * mm, y - alt + 7 * mm, 6.4 * mm, LINE, 1)
-            texto(c, cx + cw / 2, y - alt + 3.4 * mm, "já li", 6.2, FONT, SOFT, "c")
+            texto(c, cx + cw / 2, y - alt + 3.6 * mm, "já leu", 8, FONT, SOFT, "c")
         y -= alt + 5 * mm
     rodape(c, pag, total)
 
@@ -269,7 +269,7 @@ def capa(c, pag, total):
 
     rrect(c, M + 10 * mm, box_y, W - 2 * M - 20 * mm, box_h, 9, AMBER_L, None)
     texto(c, M + 18 * mm, box_topo - 8.5 * mm, "PARA DAR CERTO NO DIA A DIA",
-          8.5, FONT_B, AMBER)
+          9, FONT_B, AMBER)
     for i, t in enumerate(dicas):
         texto(c, M + 18 * mm, box_topo - 16 * mm - i * 6.4 * mm, "•  " + t, 8.6,
               FONT, INK)
@@ -360,7 +360,7 @@ def treino_leitura(c, pag, total):
     # anotações do adulto
     linha(c, M + 6 * mm, y2 - 44 * mm, W - M - 6 * mm, y2 - 44 * mm,
           HexColor("#DCE3EA"), 0.8)
-    texto(c, M + 6 * mm, y2 - 52 * mm, "O QUE FOI DIFÍCIL HOJE", 8.5, FONT_B, TEAL)
+    texto(c, M + 6 * mm, y2 - 52 * mm, "O QUE FOI DIFÍCIL HOJE", 9, FONT_B, TEAL)
     texto(c, M + 6 * mm, y2 - 58 * mm,
           "Anote a sílaba ou a palavra que travou: ela volta amanhã.", 8, FONT, SOFT)
     for k in range(6):

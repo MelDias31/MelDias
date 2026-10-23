@@ -145,7 +145,9 @@ def desenhar_texto(c, txt, x, y, size, modo="solido", cor=None, lw=None,
                 cam.lineTo(*q)
             cam.close()
         c.setFillColor(cor)
-        c.drawPath(cam, stroke=0, fill=1)
+        # fillMode=1 (nonzero): contornos que se sobrepõem (travessão do t, do f)
+        # continuam sólidos; com o modo par-ímpar aparece um quadrado branco.
+        c.drawPath(cam, stroke=0, fill=1, fillMode=1)
     else:
         for ln in linhas:
             pts = [(x + p[0] * s, y + p[1] * s) for p in ln]

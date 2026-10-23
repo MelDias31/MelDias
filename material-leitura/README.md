@@ -4,7 +4,7 @@ Material completo de alfabetização em **PDF A4** para uma criança de 6 anos c
 dificuldade de memorizar as letras. Feito para ser usado **10 minutos por dia**, em casa,
 por quem não é professor.
 
-**5 cadernos · 126 páginas · ~14 MB · tudo em A4 (210 × 297 mm)**
+**5 cadernos · 127 páginas · ~13 MB · tudo em A4 (210 × 297 mm)**
 
 ---
 
@@ -15,7 +15,7 @@ por quem não é professor.
 | **01-caderno-do-alfabeto.pdf** | 59 | criança | Capa, instruções, **26 folhas de letras** (colorir + traçar + caça-letra), **26 folhas de minúsculas**, letras que se parecem, mural do alfabeto, bingo de letras, mapa das 26 letras |
 | **02-silabas-e-palavras.pdf** | 28 | criança | **15 famílias silábicas** (BA BE BI BO BU…), **9 grupos complexos** (CH, LH, NH, RR, SS, ÃO, CE/CI, GE/GI, QU/GU), escada de palavras, leitura rápida |
 | **03-leitura-e-escrita.pdf** | 15 | criança | **5 níveis de frases**, 6 histórias curtas, ditado de figuras, folhas de escrita, autoavaliação |
-| **04-jogos-e-fichas.pdf** | 16 | família | Memória, bingo (6 cartelas + fichas), trilha com dado e peões, ligue-ligue, 3 caça-palavras, dominó de sílabas, forca |
+| **04-jogos-e-fichas.pdf** | 17 | família | Como usar os jogos, memória (24 cartas), bingo (6 cartelas + fichas), trilha de 26 casas com dado e peões, ligue-ligue (3 folhas), 3 caça-palavras, dominó de sílabas (2 folhas), forca |
 | **05-guia-do-adulto.pdf** | 8 | adulto | **Comece aqui**, guia TDAH (o que ajuda / o que atrapalha), rotina de 10 min, quadro de conquistas, registro de progresso, cartões de pausa, certificados |
 
 ---

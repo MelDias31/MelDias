@@ -8,7 +8,7 @@ from base import largura
 from letras import DEFS, desenhar_letra, desenhar_glifo
 from contornos import desenhar_texto, medir
 from figuras import emoji, emoji_quadro, checkbox
-from conteudo import ALFABETO, ORDEM, DICA_LETRA
+from conteudo import ALFABETO, ALFABETO_AZ, ORDEM, DICA_LETRA
 
 
 def capa(c, pag=1, total=1, **kw):
@@ -50,9 +50,9 @@ def capa(c, pag=1, total=1, **kw):
     texto(c, W / 2, y4 - 9 * mm, "COMECE PELA PRIMEIRA LETRA DO NOME DELA", 9,
           FONT_B, TEAL, "c")
     tam = 15
-    larg_total = largura(ORDEM, tam, FONT_B) + 25 * 1.0
+    larg_total = largura(ALFABETO_AZ, tam, FONT_B) + 25 * 1.0
     px = W / 2 - larg_total / 2
-    for i, L in enumerate(ORDEM):
+    for i, L in enumerate(ALFABETO_AZ):
         c.setFont(FONT_B, tam)
         c.setFillColor(PALETA[i % 7])
         c.drawString(px, y4 - 20 * mm, L)
@@ -63,7 +63,7 @@ def capa(c, pag=1, total=1, **kw):
     rrect(c, M + 12 * mm, y5 - 18 * mm, W - 2 * M - 24 * mm, 18 * mm, 8, AMBER_L, None)
     texto(c, M + 20 * mm, y5 - 7 * mm, "IMPRIMA SÓ A FOLHA DO DIA.", 8.5, FONT_B, AMBER)
     texto(c, M + 20 * mm, y5 - 13 * mm,
-          "Muitas folhas na mesa = distração. Uma folha por vez funciona melhor.", 8,
+          "Muitas folhas na mesa = distração. Uma folha por vez funciona melhor.", 9,
           FONT, INK)
 
     rodape(c, pag, total)
@@ -115,7 +115,7 @@ def folha_letra(c, pag, total, letra):
     bx, bw = M, 86 * mm
     rrect(c, bx, z1_y, bw, z1_h, 12, WHITE, LINE, 1.1)
     larg = DEFS[letra][0]
-    alt = 58 * mm
+    alt = 62 * mm
     escala = alt / 100.0
     lx = bx + (bw - larg * escala) / 2
     ly = z1_y + 10 * mm
@@ -127,7 +127,7 @@ def folha_letra(c, pag, total, letra):
         px, py = lx + stroke[0][0] * escala, ly + stroke[0][1] * escala
         _num(c, px, py, i + 1, 7.0, cor)
     texto(c, bx + bw / 2, z1_y + 4.5 * mm, "pinte por dentro • siga os números",
-          8.2, FONT, SOFT, "c")
+          9, FONT, SOFT, "c")
 
     # figura + palavra + minúscula
     fx = bx + bw + 4 * mm
@@ -142,7 +142,7 @@ def folha_letra(c, pag, total, letra):
     c.setFont(FONT_B, 30)
     c.setFillColor(cor)
     c.drawCentredString(fx + fw / 2 - 4 * mm, z1_y + 9 * mm, letra.lower())
-    texto(c, fx + fw / 2 + 8 * mm, z1_y + 11.5 * mm, "minúscula", 7.5, FONT, SOFT, "c")
+    texto(c, fx + fw / 2 + 9 * mm, z1_y + 11.5 * mm, "minúscula", 8.5, FONT, SOFT, "c")
 
     # ------------------------------------------------ zona 2: traçado
     z2_top = z1_y - 4 * mm
@@ -156,17 +156,17 @@ def folha_letra(c, pag, total, letra):
         ("1", "Siga as setas", "guia", True, letra),
         ("2", "Cubra o tracejado", "guia", False, letra),
         ("3", "Cubra os pontinhos", "pontilhado", False, letra),
-        ("4", "A minúscula", "min", False, letra.lower()),
+        ("4", "Escreva a minúscula", "min", False, letra.lower()),
     ]
     alt_l = 11 * mm
     x_lab = M + 5 * mm
-    x_esc = M + 36 * mm
+    x_esc = M + 42 * mm
     larg_esc = W - M - 5 * mm - x_esc
     for k, (num, rotulo, modo, com_num, alvo) in enumerate(linhas):
         ry = z2_top - 24 * mm - k * 18 * mm        # linha de base da escrita
         _num(c, x_lab + 2 * mm, ry + alt_l * 0.55, num, 7.0, cor, fundo=cor_l,
              texto_cor=cor)
-        texto(c, x_lab + 6.5 * mm, ry + alt_l * 0.75 - 3.2 * mm, rotulo, 7.8, FONT, INK)
+        texto(c, x_lab + 6.5 * mm, ry + alt_l * 0.75 - 3.2 * mm, rotulo, 9, FONT, INK)
         pauta(c, x_esc, ry, larg_esc, alt_l, HexColor("#DCE2E9"))
         px = x_esc + 2 * mm
         espac = 17 * mm if modo != "min" else 15 * mm
@@ -190,7 +190,7 @@ def folha_letra(c, pag, total, letra):
     rrect(c, M, z3_y, W - 2 * M, z3_h, 12, cor_l, None)
     texto(c, M + 5 * mm, z3_top - 7.5 * mm,
           f"5. Ache e circule todas as letras {letra}", 9.5, FONT_B, INK)
-    texto(c, W - M - 5 * mm, z3_top - 7.5 * mm, "quantas você achou?", 8, FONT, SOFT, "r")
+    texto(c, W - M - 5 * mm, z3_top - 7.5 * mm, "quantas você achou?", 9, FONT, SOFT, "r")
     rrect(c, M + 62 * mm, z3_top - 9.6 * mm, 12 * mm, 6.0 * mm, 2, WHITE,
           HexColor("#9AA3AF"), 1)
     _grade_letras(c, M + 5 * mm, z3_y + 3 * mm, W - 2 * M - 10 * mm,
@@ -292,9 +292,6 @@ def folha_letra_minuscula(c, pag, total, letra):
                            "pontilhado", SOFT)
             xx += 31 * mm
             j += 1
-    rodape(c, pag, total)
-
-
     rodape(c, pag, total)
 
 
@@ -427,7 +424,8 @@ def _mural(c, letras, titulo, cor):
     topo = faixa_titulo(c, titulo, "Recorte, cole na parede e aponte todos os dias.",
                         cor, PALETA_L[PALETA.index(cor)], etiqueta="mural")
     larg = W - 2 * M
-    cols, rows = 3, 5
+    cols = 3
+    rows = (len(letras) + cols - 1) // cols
     cw = (larg - 4 * mm) / cols
     ch = (topo - M - 6 * mm) / rows
     for i, L in enumerate(letras):
@@ -459,12 +457,12 @@ def _mural(c, letras, titulo, cor):
 
 
 def alfabeto_mural(c, pag, total):
-    _mural(c, ORDEM[:15], "MURAL DO ALFABETO — PARTE 1", TEAL)
+    _mural(c, ALFABETO_AZ[:15], "MURAL DO ALFABETO — PARTE 1", TEAL)
     rodape(c, pag, total)
 
 
 def alfabeto_mural_2(c, pag, total):
-    _mural(c, ORDEM[15:], "MURAL DO ALFABETO — PARTE 2", BLUE)
+    _mural(c, ALFABETO_AZ[15:], "MURAL DO ALFABETO — PARTE 2", BLUE)
     rodape(c, pag, total)
 
 
@@ -487,7 +485,7 @@ def bingo_letras(c, pag, total):
         y = H - M - 20 * mm - (row + 1) * ch - row * 6 * mm
         rrect(c, x, y, cw, ch, 8, WHITE, TEAL, 1.3)
         texto(c, x + cw / 2, y + ch - 6 * mm, f"CARTELA {k + 1}", 8.5, FONT_B, TEAL, "c")
-        escolhas = rnd.sample(ORDEM, 12)
+        escolhas = rnd.sample(ALFABETO_AZ, 12)
         c2 = cw / 4
         h2 = (ch - 12 * mm) / 3
         for i, L in enumerate(escolhas):
@@ -500,6 +498,7 @@ def bingo_letras(c, pag, total):
     texto(c, W / 2, M + 6 * mm,
           "Fichas para cantar: escreva as letras em pedacinhos de papel ou use o alfabeto móvel.",
           8.5, FONT_I, SOFT, "c")
+    marcas_de_corte(c)
     rodape(c, pag, total)
 
 
@@ -512,7 +511,7 @@ def quadro_progresso(c, pag, total):
     larg = W - 2 * M
     # legenda
     y = topo - 8 * mm
-    texto(c, M, y, "COMO MARCAR:", 8.5, FONT_B, TEAL)
+    texto(c, M, y, "COMO MARCAR:", 9, FONT_B, TEAL)
     xx = M + 27 * mm
     rrect(c, xx, y - 3.2 * mm, 6.5 * mm, 6 * mm, 1.5, WHITE, GREEN, 0.9)
     texto(c, xx + 2 * mm, y - 1.4 * mm, "lê", 5.6, FONT, GREEN, "c")
@@ -552,7 +551,7 @@ def quadro_progresso(c, pag, total):
               "progresso visível é o que sustenta a vontade de continuar.", 8.6, FONT, INK)
     # quadro de quantas letras
     yy = y2 - 30 * mm
-    texto(c, M + 5 * mm, yy, "QUANTAS LETRAS EU JÁ SEI?", 8.5, FONT_B, AMBER)
+    texto(c, M + 5 * mm, yy, "QUANTAS LETRAS EU JÁ SEI?", 9.5, FONT_B, AMBER)
     for k in range(4):
         cx = M + 12 * mm + k * 34 * mm
         rrect(c, cx, yy - 12 * mm, 26 * mm, 9 * mm, 3, WHITE, HexColor("#D9C7A2"), 0.9)
