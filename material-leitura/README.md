@@ -4,7 +4,7 @@ Material completo de alfabetização em **PDF A4** para uma criança de 6 anos c
 dificuldade de memorizar as letras. Feito para ser usado **10 minutos por dia**, em casa,
 por quem não é professor.
 
-**5 cadernos · 127 páginas · ~13 MB · tudo em A4 (210 × 297 mm)**
+**6 cadernos · 134 páginas · ~13 MB · tudo em A4 (210 × 297 mm)**
 
 ---
 
@@ -17,18 +17,22 @@ por quem não é professor.
 | **03-leitura-e-escrita.pdf** | 15 | criança | **5 níveis de frases**, 6 histórias curtas, ditado de figuras, folhas de escrita, autoavaliação |
 | **04-jogos-e-fichas.pdf** | 17 | família | Como usar os jogos, memória (24 cartas), bingo (6 cartelas + fichas), trilha de 26 casas com dado e peões, ligue-ligue (3 folhas), 3 caça-palavras, dominó de sílabas (2 folhas), forca |
 | **05-guia-do-adulto.pdf** | 8 | adulto | **Comece aqui**, guia TDAH (o que ajuda / o que atrapalha), rotina de 10 min, quadro de conquistas, registro de progresso, cartões de pausa, certificados |
+| **06-cronograma-4-semanas.pdf** | 7 | adulto | **Plano dia a dia do primeiro mês**: lista de impressão em ordem, uma página por semana (o que fazer, o que observar, se ela travar) e o que fazer depois da 4ª semana |
 
 ---
 
 ## Como começar (hoje)
 
-1. Imprima **apenas** as páginas 1 e 2 do caderno 01 + a **folha da letra A** (página 3) +
-   as páginas 1 a 5 do caderno **05**.
-2. Leia o **guia do adulto** (5 minutos de leitura). Ele explica a rotina.
-3. Cole o **quadro de conquistas** na parede.
-4. Sente-se ao lado, use **10 minutos**, e pare antes do cansaço.
+1. Abra o **06-cronograma-4-semanas.pdf**: a página 2 é a lista de impressão, na ordem,
+   e cada semana tem a sua página com o dia a dia.
+2. Na primeira semana, imprima **apenas** as páginas 1 e 2 do caderno 01 + a **folha da
+   letra A** (página 3) + as páginas 1 a 5 do caderno **05**.
+3. Leia o **guia do adulto** (5 minutos de leitura). Ele explica a rotina.
+4. Cole o **quadro de conquistas** na parede.
+5. Sente-se ao lado, use **10 minutos**, e pare antes do cansaço.
 
-A página **"Comece aqui — primeira semana"** (página 2 do guia) traz o plano dia a dia.
+A página **"Comece aqui — primeira semana"** (página 2 do guia) resume a semana 1; o
+cronograma (caderno 06) traz as quatro primeiras semanas já montadas, com as páginas exatas.
 
 ### Por que essa ordem de letras
 

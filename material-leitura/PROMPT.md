@@ -32,6 +32,7 @@ Nada de imagens coloridas que concorram com a tarefa: cor só para hierarquizar.
 | `03-leitura-e-escrita.pdf` | 5 níveis de frases, histórias curtas, ditado de figuras, folhas de escrita, autoavaliação | ~15 |
 | `04-jogos-e-fichas.pdf` | Como usar os jogos, memória (24 cartas), bingo (6 cartelas + fichas), trilha de 26 casas com dado e peões, ligue-ligue, 3 caça-palavras, dominó, forca | ~17 |
 | `05-guia-do-adulto.pdf` | Guia TDAH, rotina de 10 min, quadro de recompensas, registro de progresso, cartões de pausa, certificados | ~8 |
+| `06-cronograma-4-semanas.pdf` | Plano dia a dia do primeiro mês: lista de impressão em ordem, uma página por semana e o que fazer depois da 4ª semana | ~7 |
 
 ### Regras de design obrigatórias (TDAH-friendly)
 1. **Uma tarefa por página.** Nunca duas atividades competindo na mesma folha.
@@ -107,7 +108,7 @@ Gere os 5 PDFs separadamente, nomeados como na tabela, e liste no final:
 material-leitura/
 ├── PROMPT.md                  ← este arquivo (prompt + explicação)
 ├── README.md                  ← como imprimir e usar
-├── pdf/                       ← os 5 PDFs prontos, A4
+├── pdf/                       ← os 6 PDFs prontos, A4
 ├── fontes/                    ← Andika (SIL OFL) e Noto Emoji (Apache 2.0)
 └── src/                       ← código Python que gera os PDFs
     ├── gerar.py               ← roda tudo: python src/gerar.py
@@ -120,7 +121,8 @@ material-leitura/
     ├── p_silabas.py           ← páginas de sílabas
     ├── p_leitura.py           ← páginas de leitura e escrita
     ├── p_jogos.py             ← jogos e fichas
-    └── p_manual.py            ← guia do adulto
+    ├── p_manual.py            ← guia do adulto
+    └── p_cronograma.py        ← cronograma de 4 semanas
 ```
 
 Para regerar os PDFs:

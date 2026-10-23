@@ -16,6 +16,7 @@ import p_silabas as ps
 import p_leitura as pl
 import p_jogos as pj
 import p_manual as pm
+import p_cronograma as pc
 from conteudo import (ALFABETO, ORDEM, FAMILIAS, COMPLEXAS, FRASES,
                       LIGUE, CACA)
 
@@ -104,11 +105,22 @@ def guia_familia():
     return d.render()
 
 
+def cronograma():
+    d = Doc("06-cronograma-4-semanas.pdf", "Cronograma de 4 Semanas",
+            "Plano dia a dia do primeiro mês — o que fazer e o que imprimir")
+    d.add(pc.capa)
+    d.add(pc.lista_impressao)
+    for n in range(4):
+        d.add(pc.semana, n)
+    d.add(pc.depois)
+    return d.render()
+
+
 def main():
     registrar_fontes()
     os.makedirs(PDF, exist_ok=True)
     for fn in (caderno_alfabeto, caderno_silabas, caderno_leitura,
-               caderno_jogos, guia_familia):
+               caderno_jogos, guia_familia, cronograma):
         caminho, total = fn()
         print(f"{os.path.basename(caminho):32s} {total:3d} páginas")
 
